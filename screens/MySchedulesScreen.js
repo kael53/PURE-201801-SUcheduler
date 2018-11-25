@@ -1,11 +1,21 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View, text} from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
- 
+import {Component }  from 'react' ;
+
+
 export default class MySchedulesScreen extends React.Component {
+  
   static navigationOptions = {
+ 
+
     title: 'MySchedules',
+    headerStyle: {
+ 
+      backgroundColor: '#11ABD8'
+ 
+    }
   };
 
  constructor(props) {     //CRN no table, names(schedule1 etc) are buttons that calls schedule table
@@ -14,7 +24,7 @@ export default class MySchedulesScreen extends React.Component {
     tableHead: ['', 'CRN codes'],
     tableTitle: ['Schedule1', 'Schedule2', 'Schedule3', 'Schedule4'],
     tableData: [
-      ['12345', '12346', '12347','12348', '12349', '12350'],
+      ['12345', '12396', '12347','12348', '12349', '12350'],
       ['35625', '85545', '13524','25624', '23462', '45325'],
       ['45110', '10468', '10432','26422', '12354', '23154'],
       ['11002', '21352', '52103','20743', '15207', '12310'],
@@ -62,11 +72,11 @@ export default class MySchedulesScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 14, paddingTop: 60, backgroundColor: '#fff' }, //padding --> yanlardaki bosluk, padding top ==> ustteki bosluk
-  head: {  height: 40,  backgroundColor: '#f1f8ff'  },
+  container: { flex: 1, padding: 24, paddingTop: 60, backgroundColor: '#fff' }, //padding --> yanlardaki bosluk, padding top ==> ustteki bosluk
+  head: {  height: 30,  backgroundColor: '#f1f8ff'  },
   wrapper: { flexDirection: 'row' },
-  title: { flex: 1, backgroundColor: '#f6f8fa' },
+  title: { flex: 1, backgroundColor: '#f6f1fa' },
   row: {  height: 32  },
-  text: { textAlign: 'center' }
+  text: { textAlign: 'centere' }
 });
 

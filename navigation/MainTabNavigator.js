@@ -3,12 +3,12 @@ import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
-import WelcomeScreen from '../screens/WelcomeScreen';
+//import WelcomeScreen from '../screens/WelcomeScreen';
 import GenerateScreen from '../screens/GenerateScreen';
 import MySchedulesScreen from '../screens/MySchedulesScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
-
+/*
 const Welcome = createStackNavigator({
   Welcome: WelcomeScreen,
 });
@@ -25,7 +25,7 @@ Welcome.navigationOptions = {
       }
     /> 
   ),
-};
+};*/
 
 
 const GenerateStack = createStackNavigator({
@@ -78,5 +78,5 @@ export default createBottomTabNavigator({
   GenerateStack,
   MySchedulesStack,
   SettingsStack,
-  Welcome,
+//  Welcome,
 });

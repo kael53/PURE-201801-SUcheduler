@@ -2,6 +2,9 @@ import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
+import SplashScreen from './screens/WelcomeScreen';
+
+
 
 export default class App extends React.Component {
   state = {
@@ -9,6 +12,7 @@ export default class App extends React.Component {
   };
 
   render() {
+  
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
         <AppLoading
@@ -18,11 +22,25 @@ export default class App extends React.Component {
         />
       );
     } else {
-      return (
-        <View style={styles.container}>
+      
+
+
+    setTimeout(function(){this.setState({timePassed: true})}, 2000);
+    if (!this.state.timePassed){
+       return (
+          <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           <AppNavigator />
-        </View>
+          </View>
+        );
+    }else{
+      return (
+        <NavigatorIOS
+          style = {styles.container}
+          initialRoute = {{
+            component: LoginPage,
+            title: 'Hello',
+          }}/>
       );
     }
   }
@@ -53,7 +71,7 @@ export default class App extends React.Component {
     this.setState({ isLoadingComplete: true });
   };
 }
-
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
