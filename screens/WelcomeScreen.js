@@ -16,6 +16,22 @@ export default class WelcomeScreen extends React.Component {
     title: 'Welcome',
   };
 
+  componentDidMount () {
+     if (this.props.skipLoadingScreen == true)
+        this._navigateTo('Generate');
+     else
+	this.timeoutHandle = setTimeout(() => {this._navigateTo('Generate')}, 5000);
+  }
+
+  componentWillUnmount(){
+     clearTimeout(this.timeoutHandle);
+  }
+
+_navigateTo = (routeName: string) => {
+  this.props.navigation.navigate(routeName);
+}
+
+
   render() {
     return (
 
@@ -32,16 +48,7 @@ export default class WelcomeScreen extends React.Component {
               style={styles.welcomeImage}
             />
           </View>
-          <View style={styles.getStartedContainer}>
-            <Text style={styles.getStartedText}>Click Genetare to generate schedules.</Text>
-
-            <Text style={styles.getStartedText}>
-              Click MySchedules to see your saved schedules.
-            </Text>
-          </View>
         </ScrollView>
-
-        
       </View>
     );
   }

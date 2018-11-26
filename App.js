@@ -39,30 +39,6 @@ export default class App extends React.Component {
     } else {
 
 
-        /* compenentWillMount() {
-    setTimeout(function(){this.setState({timePassed: true})}, 2000);
-  }
-    if (!this.state.timePassed){
-       return (
-          <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <AppNavigator />
-          </View>
-        );
-    }else{                                                                  Function is here -GBoss
-      return (
-        <NavigatorIOS
-          style = {styles.container}
-          initialRoute = {{
-            component: LoginPage,
-            title: 'Hello',
-          }}/>
-      );
-    }
-  }
-     */
-      
-
       return (
 
         <View style={styles.container}>

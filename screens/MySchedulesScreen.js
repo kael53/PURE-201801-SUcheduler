@@ -77,6 +77,6 @@ const styles = StyleSheet.create({
   wrapper: { flexDirection: 'row' },
   title: { flex: 1, backgroundColor: '#f6f1fa' },
   row: {  height: 32  },
-  text: { textAlign: 'centere' }
+  text: { textAlign: 'center' }
 });
 

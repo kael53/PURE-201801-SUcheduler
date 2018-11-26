@@ -3,30 +3,9 @@ import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
-//import WelcomeScreen from '../screens/WelcomeScreen';
 import GenerateScreen from '../screens/GenerateScreen';
 import MySchedulesScreen from '../screens/MySchedulesScreen';
 import SettingsScreen from '../screens/SettingsScreen';
-
-/*
-const Welcome = createStackNavigator({
-  Welcome: WelcomeScreen,
-});
-
-Welcome.navigationOptions = {
-  tabBarLabel: 'Welcome',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
-      }
-    /> 
-  ),
-};*/
-
 
 const GenerateStack = createStackNavigator({
   Generate: GenerateScreen,
@@ -42,7 +21,7 @@ GenerateStack.navigationOptions = {
           ? `ios-information-circle${focused ? '' : '-outline'}`
           : 'md-information-circle'
       }
-    /> 
+    />
   ),
 };
 
@@ -78,5 +57,4 @@ export default createBottomTabNavigator({
   GenerateStack,
   MySchedulesStack,
   SettingsStack,
-//  Welcome,
 });
