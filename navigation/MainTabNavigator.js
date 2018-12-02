@@ -6,6 +6,14 @@ import TabBarIcon from '../components/TabBarIcon';
 import GenerateScreen from '../screens/GenerateScreen';
 import MySchedulesScreen from '../screens/MySchedulesScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import MySchedule1 from '../screens/MySchedule1';
+import MySchedule2 from '../screens/MySchedule2';
+import MySchedule3 from '../screens/MySchedule3';
+import MySchedule4 from '../screens/MySchedule4';
+
+
+
+
 
 const GenerateStack = createStackNavigator({
   Generate: GenerateScreen,
@@ -57,4 +65,5 @@ export default createBottomTabNavigator({
   GenerateStack,
   MySchedulesStack,
   SettingsStack,
+
 });

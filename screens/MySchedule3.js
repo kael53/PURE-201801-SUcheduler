@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View, Text, TouchableOpacity, Alert} from 'react-native';
+import { ScrollView, StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
 import {Component }  from 'react' ;
@@ -7,54 +7,60 @@ import {Component }  from 'react' ;
 
 
 
-export default class MySchedulesScreen extends React.Component {
+export default class MySchedule3 extends React.Component {
 
   static navigationOptions = {
-
-
-    title: 'MySchedules',
+    title: 'Schedule3',
     headerStyle: {
-
       backgroundColor: '#11ABD8'
-
     }
   };
-_navigateTo = (routeName: string) => {
-  this.props.navigation.navigate(routeName);
-};
+
  constructor(props) {     //CRN no table, names(schedule1 etc) are buttons that calls schedule table
   super(props);
 
-  const elementButton = (value: string) => (
-    <TouchableOpacity onPress={() => this._navigateTo(value)}>
+   /*       // Hard coded schedule example    //flexArr={[1.68,1,1,1,1,1]} for scheduler example , width needs to be maintain
+   constructor(props) {
+  super(props);
+  
+  */
+  const elementButton = (value) => (
+    <TouchableOpacity onPress={() => this.props.navigation.navigate('MySchedules')}>
     <View style={styles.btn}>
     <Text style={styles.text}>{value}</Text>
     </View>
     </TouchableOpacity>
     );
 
-  
   this.state = {
-    tableHead: ['', 'CRN codes'],
-    tableTitle: [elementButton('Schedule1'),elementButton('Schedule2'),elementButton('Schedule3'),elementButton('Schedule4')],
+    tableHead: [elementButton('Back'), 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+    tableTitle: ['8.40\n9.30','9.40\n10.30','10.40\n11.30','11.40\n12.30','12.40\n13.30','13.40\n14.30','14.40\n15.30','15.40\n16.30','16.40\n17.30','17.40\n18.30','18.40\n19.30','19.40\n20.30'],
     tableData: [
-    ['12345', '12396', '12347','12348', '12349', '12350'],
-    ['', '', '','', '', ''],
-    ['', '', '','', '', ''],
-    ['11002', '21352', '52103','20743', '15207', '12310'],
+      ['', '', '','', ''],
+      ['', '', '','', ''],
+      ['', '', '','', ''],
+      ['', '', '','', ''],
+      ['', '', '','', ''],
+      ['', '', '','', ''],
+      ['', '', '','', ''],
+      ['', '', '','', ''],
+      ['', '', '','', ''],
+      ['', '', '','', ''],
+      ['', '', '','', ''],
+      ['', '', '','', '']
     ]
   }
-};
-_alertIndex(index) {
-    Alert.alert(`This is ${index}`);
-  }
+  };
+
+
 render() {
+
   const state = this.state;
 
   return (
     <View style={styles.container}>
     <Table>
-    <Row data={state.tableHead} flexArr={[2,6]} style={styles.head} textStyle={styles.text}/>    
+    <Row data={state.tableHead} flexArr={[0.85,1,1,1,1,1]} style={styles.head} textStyle={styles.text}/>    
     <TableWrapper style={styles.wrapper}>
     <Col data={state.tableTitle}  style={styles.title} heightArr={[32,32]} textStyle={styles.text}/>
     <Rows data={state.tableData} flexArr={[1, 1, 1, 1, 1, 1]} style={styles.row} textStyle={styles.text}/>
@@ -69,7 +75,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, paddingTop: 60, backgroundColor: '#fff' }, //padding --> yanlardaki bosluk, padding top ==> ustteki bosluk
   head: {  height: 32,  backgroundColor: '#f1f8ff'  },
   wrapper: { flexDirection: 'row' },
-  title: { flex: 2, backgroundColor: '#f6f1fa' },
+  title: { flex: 1, backgroundColor: '#f6f1fa' },
   row: {  height: 32  },
   text: { textAlign: 'center' }
 });
