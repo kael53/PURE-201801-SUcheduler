@@ -4,9 +4,6 @@ import { ExpoLinksView } from '@expo/samples';
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
 import {Component }  from 'react' ;
 
-
-
-
 export default class MySchedule3 extends React.Component {
 
   static navigationOptions = {
@@ -16,14 +13,9 @@ export default class MySchedule3 extends React.Component {
     }
   };
 
- constructor(props) {     //CRN no table, names(schedule1 etc) are buttons that calls schedule table
-  super(props);
-
-   /*       // Hard coded schedule example    //flexArr={[1.68,1,1,1,1,1]} for scheduler example , width needs to be maintain
-   constructor(props) {
+ constructor(props) {   
   super(props);
   
-  */
   const elementButton = (value) => (
     <TouchableOpacity onPress={() => this.props.navigation.navigate('MySchedules')}>
     <View style={styles.btn}>

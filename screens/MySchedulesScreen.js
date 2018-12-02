@@ -4,9 +4,6 @@ import { ExpoLinksView } from '@expo/samples';
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
 import {Component }  from 'react' ;
 
-
-
-
 export default class MySchedulesScreen extends React.Component {
 
   static navigationOptions = {
@@ -19,9 +16,11 @@ export default class MySchedulesScreen extends React.Component {
 
     }
   };
+
 _navigateTo = (routeName: string) => {
   this.props.navigation.navigate(routeName);
 };
+
  constructor(props) {     //CRN no table, names(schedule1 etc) are buttons that calls schedule table
   super(props);
 
@@ -33,7 +32,6 @@ _navigateTo = (routeName: string) => {
     </TouchableOpacity>
     );
 
-  
   this.state = {
     tableHead: ['', 'CRN codes'],
     tableTitle: [elementButton('Schedule1'),elementButton('Schedule2'),elementButton('Schedule3'),elementButton('Schedule4')],
@@ -45,24 +43,22 @@ _navigateTo = (routeName: string) => {
     ]
   }
 };
-_alertIndex(index) {
-    Alert.alert(`This is ${index}`);
-  }
-render() {
-  const state = this.state;
 
-  return (
-    <View style={styles.container}>
-    <Table>
-    <Row data={state.tableHead} flexArr={[2,6]} style={styles.head} textStyle={styles.text}/>    
-    <TableWrapper style={styles.wrapper}>
-    <Col data={state.tableTitle}  style={styles.title} heightArr={[32,32]} textStyle={styles.text}/>
-    <Rows data={state.tableData} flexArr={[1, 1, 1, 1, 1, 1]} style={styles.row} textStyle={styles.text}/>
-    </TableWrapper>
-    </Table>
-    </View>
-    )
-}
+  render() {
+    const state = this.state;
+
+    return (
+      <View style={styles.container}>
+      <Table>
+      <Row data={state.tableHead} flexArr={[2,6]} style={styles.head} textStyle={styles.text}/>    
+      <TableWrapper style={styles.wrapper}>
+      <Col data={state.tableTitle}  style={styles.title} heightArr={[32,32]} textStyle={styles.text}/>
+      <Rows data={state.tableData} flexArr={[1, 1, 1, 1, 1, 1]} style={styles.row} textStyle={styles.text}/>
+      </TableWrapper>
+      </Table>
+      </View>
+      )
+  }
 }
 
 const styles = StyleSheet.create({
