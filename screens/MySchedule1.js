@@ -66,7 +66,7 @@ handleBackButtonClick() {
     return (
       <View style={styles.container}>
       <Table>
-      <Row data={state.tableHead} flexArr={[0.8,1,1,1,1,1]} style={styles.head} textStyle={styles.headText}/>    
+      <Row data={state.tableHead} flexArr={[0.795,1,1,1,1,1]} style={styles.head} textStyle={styles.headText}/>    
       <TableWrapper style={styles.wrapper}>
       <Col data={state.tableTitle}  style={styles.title} heightArr={[32,32]} textStyle={styles.text}/>
       <Rows data={state.tableData} flexArr={[1, 1, 1, 1, 1]} style={styles.row} textStyle={styles.text}/>
@@ -84,6 +84,10 @@ const styles = StyleSheet.create({
   title: { flex: 0.8, backgroundColor: '#f6f1fa' },
   row: {  height: 32 },
   text: { textAlign: 'center'  ,fontSize: 12 },
-  headText: { textAlign: 'center', fontSize:24 }
+  headText: { textAlign: 'center', fontSize:24 },
+  btn: {
+    alignItems: 'center',
+    backgroundColor: '#2196F3'
+  },
 });
 

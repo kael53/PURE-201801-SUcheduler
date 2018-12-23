@@ -34,12 +34,13 @@ _navigateTo = (routeName: string) => {
 
   this.state = {
     tableHead: ['', 'CRN codes'],
-    tableTitle: [elementButton('Schedule1'),elementButton('Schedule2'),elementButton('Schedule3'),elementButton('Schedule4')],
+    tableTitle: [elementButton('Schedule1'),elementButton('Schedule2'),elementButton('Schedule3'),elementButton('Schedule4'),elementButton('TimePref')],
     tableData: [
     ['12345', '12396', '12347','12348', '12349', '12350'],
     ['', '', '','', '', ''],
     ['', '', '','', '', ''],
     ['11002', '21352', '52103','20743', '15207', '12310'],
+    ['', '', '','', '', ''],
     ]
   }
 };
@@ -50,9 +51,9 @@ _navigateTo = (routeName: string) => {
     return (
       <View style={styles.container}>
       <Table>
-      <Row data={state.tableHead} flexArr={[2,6]} style={styles.head} textStyle={styles.text}/>    
+      <Row data={state.tableHead} flexArr={[1.99,6]} style={styles.head} textStyle={styles.text}/>    
       <TableWrapper style={styles.wrapper}>
-      <Col data={state.tableTitle}  style={styles.title} heightArr={[32,32]} textStyle={styles.text}/>
+      <Col data={state.tableTitle} style={styles.title} heightArr={[32,32]} textStyle={styles.text}/>
       <Rows data={state.tableData} flexArr={[1, 1, 1, 1, 1, 1]} style={styles.row} textStyle={styles.text}/>
       </TableWrapper>
       </Table>

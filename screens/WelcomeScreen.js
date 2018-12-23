@@ -16,39 +16,39 @@ export default class WelcomeScreen extends React.Component {
     title: 'Welcome',
   };
 
-  componentDidMount () {
-     if (this.props.skipLoadingScreen == true)
-        this._navigateTo('Generate');
-     else
-	this.timeoutHandle = setTimeout(() => {this._navigateTo('Generate')}, 5000);
+  componentDidMount() {
+    if (this.props.skipLoadingScreen == true)
+      this._navigateTo('Generate');
+    else
+      this.timeoutHandle = setTimeout(() => { this._navigateTo('Generate') }, 5000);
   }
 
-  componentWillUnmount(){
-     clearTimeout(this.timeoutHandle);
+  componentWillUnmount() {
+    clearTimeout(this.timeoutHandle);
   }
 
-_navigateTo = (routeName: string) => {
-  this.props.navigation.navigate(routeName);
-}
+  _navigateTo = (routeName: string) => {
+    this.props.navigation.navigate(routeName);
+  }
 
 
   render() {
     return (
 
       //return welcome Screen for a while, than generate
-      <View style={styles.container}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/SUcheduler.png')
-                  : require('../assets/images/SUcheduler.png')
-              }
-              style={styles.welcomeImage}
-            />
-          </View>
-        </ScrollView>
+      <View style={styles.container} contentContainerStyle={styles.contentContainer}>
+
+        <View style={styles.welcomeContainer}>
+          <Image
+            source={
+              __DEV__
+                ? require('../assets/images/SUcheduler.png')
+                : require('../assets/images/SUcheduler.png')
+            }
+            style={styles.welcomeImage}
+          />
+        </View>
+
       </View>
     );
   }
@@ -56,6 +56,7 @@ _navigateTo = (routeName: string) => {
 
 const styles = StyleSheet.create({
   container: {
+    alignItems: 'center',
     flex: 1,
     backgroundColor: 'black',
   },
@@ -70,9 +71,11 @@ const styles = StyleSheet.create({
     paddingTop: 30,
   },
   welcomeContainer: {
+    
+    flex: 1,
+    flexDirection: 'column',
     alignItems: 'center',
-    marginTop: 50,
-    marginBottom: 20,
+    justifyContent: 'center'
   },
   welcomeImage: {
     width: 500,
