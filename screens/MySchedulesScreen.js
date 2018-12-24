@@ -34,13 +34,12 @@ _navigateTo = (routeName: string) => {
 
   this.state = {
     tableHead: ['', 'CRN codes'],
-    tableTitle: [elementButton('Schedule1'),elementButton('Schedule2'),elementButton('Schedule3'),elementButton('Schedule4'),elementButton('TimePref')],
+    tableTitle: [elementButton('Schedule1'),elementButton('Schedule2'),elementButton('Schedule3'),elementButton('Schedule4')],
     tableData: [
     ['12345', '12396', '12347','12348', '12349', '12350'],
     ['', '', '','', '', ''],
     ['', '', '','', '', ''],
     ['11002', '21352', '52103','20743', '15207', '12310'],
-    ['', '', '','', '', ''],
     ]
   }
 };
