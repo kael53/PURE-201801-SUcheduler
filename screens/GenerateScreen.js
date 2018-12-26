@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {
   Image,
   Platform,
@@ -14,7 +14,8 @@ import { WebBrowser } from 'expo';
 import RNPickerSelect from 'react-native-picker-select';
 import { MonoText } from '../components/StyledText';
 import { Dropdown } from 'react-native-material-dropdown';
-
+import PropTypes from 'prop-types';
+import MultipleChoice from 'rn-multiple-choice';
 
 
 
@@ -28,7 +29,20 @@ const styles = StyleSheet.create({
 });
 
 
+Component.propTypes = {
+text: PropTypes.array.isRequired,
+};
 
+
+class Cell extends Component {
+  render() {
+    return (
+      <View style={{height:30}}>
+        <Text>{this.props.item}</Text>
+      </View>
+    );
+  }
+}
 
 export default class GenerateScreen extends React.Component {
   constructor(props) {
@@ -76,7 +90,7 @@ _navigateTo = (routeName: string) => {
       { value: '301', },
       { value: '305', },
     ];
-
+var AlphabetListView = require('react-native-alphabetlistview')
     return (
 
       <View style={styles.container}>
@@ -94,6 +108,23 @@ _navigateTo = (routeName: string) => {
 
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}>
+         <MultipleChoice 
+         options= {[
+           
+           <AlphabetListView
+           data={dataLECTURE}
+      /* cell={Cell}
+           cellHeight={50} */
+           sectionHeaderHeight={12.5}
+           />
+
+           ]}
+
+            selectedOptions={[]}
+            maxSelectedOptions= {2}
+            onSelection= {(option)=>alert(option + 'was selected!')}
+            />
+
           </View>
         </ScrollView>
       </View>
