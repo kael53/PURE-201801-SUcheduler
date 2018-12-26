@@ -110,13 +110,13 @@ var AlphabetListView = require('react-native-alphabetlistview')
           <View style={styles.welcomeContainer}>
          <MultipleChoice 
          options= {[
-           
-           <AlphabetListView
+           'kerem' , ' mert' , 'gurhan'
+         /*  <AlphabetListView
            data={dataLECTURE}
       /* cell={Cell}
-           cellHeight={50} */
+           cellHeight={50} 
            sectionHeaderHeight={12.5}
-           />
+           /> */
 
            ]}
 
