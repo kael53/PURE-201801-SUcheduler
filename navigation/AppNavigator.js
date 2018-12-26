@@ -1,5 +1,5 @@
 import React from 'react';
-import { createSwitchNavigator } from 'react-navigation';
+import { createSwitchNavigator,createStackNavigator } from 'react-navigation';
 
 import WelcomeScreen from '../screens/WelcomeScreen';
 import MainTabNavigator from './MainTabNavigator';
@@ -9,15 +9,22 @@ import MySchedule3 from '../screens/MySchedule3';
 import MySchedule4 from '../screens/MySchedule4';
 import TimePreference from '../screens/TimePreference';
 
+const TimePreferenceStack = createStackNavigator({
+  TimePref: TimePreference,
+});
+TimePreferenceStack.navigationOptions = {
+};
 export default createSwitchNavigator({
   // You could add another route here for authentication.
   // Read more at https://reactnavigation.org/docs/en/auth-flow.html
 
-  Welcome: { screen: WelcomeScreen },
+  //Welcome: { screen: WelcomeScreen },
   Main: MainTabNavigator,
   Schedule1: MySchedule1,
   Schedule2: MySchedule2,
   Schedule3: MySchedule3,
   Schedule4: MySchedule4,
-  TimePref: TimePreference
+  TimePreferenceStack
+
+
 });

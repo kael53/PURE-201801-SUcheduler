@@ -38,13 +38,20 @@ const MySchedulesStack = createStackNavigator({
 });
 
 MySchedulesStack.navigationOptions = {
-  tabBarLabel: 'MySchedules',
+  tabBarLabel: 'My Schedules',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
       name={Platform.OS === 'ios' ? `ios-link${focused ? '' : '-outline'}` : 'md-link'}
     />
   ),
+};
+
+const TimePreferenceStack = createStackNavigator({
+  TimePref: TimePreference,
+});
+
+TimePreferenceStack.navigationOptions = {
 };
 
 const SettingsStack = createStackNavigator({
@@ -65,5 +72,4 @@ export default createBottomTabNavigator({
   GenerateStack,
   MySchedulesStack,
   SettingsStack,
-
 });

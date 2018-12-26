@@ -9,7 +9,7 @@ export default class MySchedulesScreen extends React.Component {
   static navigationOptions = {
 
 
-    title: 'MySchedules',
+    title: 'My Schedules',
     headerStyle: {
 
       backgroundColor: '#11ABD8'

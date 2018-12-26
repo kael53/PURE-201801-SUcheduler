@@ -9,7 +9,7 @@ import SimpleToggleButton from '../components/SimpleToggleButton'
 export default class TimePreference extends React.Component {
   
   static navigationOptions = {
-    title: 'TimePref',
+    title: 'Time Preferences',
     headerStyle: {
       backgroundColor: '#11ABD8'
     }
@@ -75,6 +75,7 @@ export default class TimePreference extends React.Component {
   render() {
     const state = this.state;
     return (
+      //Time Preferences
       <View style={styles.container}>
         <Table>
           <Row data={state.tableHead} flexArr={[0.8, 1, 1, 1, 1, 1]} style={styles.head} textStyle={styles.headText} />
