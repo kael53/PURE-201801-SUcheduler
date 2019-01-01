@@ -1,5 +1,4 @@
-import React, {Component} from 'react';
-import {
+import React, {Component} from 'react'; import {
   Image,
   Platform,
   ScrollView,
@@ -10,14 +9,11 @@ import {
   View,
   Button,
 } from 'react-native';
+import { CheckBox } from 'react-native-elements'
 import { WebBrowser } from 'expo';
-import RNPickerSelect from 'react-native-picker-select';
 import { MonoText } from '../components/StyledText';
-import { Dropdown } from 'react-native-material-dropdown';
 import PropTypes from 'prop-types';
-import MultipleChoice from 'rn-multiple-choice';
-
-
+import AlphabetListView from 'react-native-alphabetlistview';
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, paddingTop: 60, backgroundColor: '#fff' }, //padding --> yanlardaki bosluk, padding top ==> ustteki bosluk
@@ -28,17 +24,44 @@ const styles = StyleSheet.create({
   text: { textAlign: 'center' }
 });
 
+class SectionHeader extends Component {
+  render() {
+    // inline styles used for brevity, use a stylesheet when possible
+    var textStyle = {
+      textAlign:'center',
+      color:'#fff',
+      fontWeight:'700',
+      fontSize:16
+    };
 
-Component.propTypes = {
-text: PropTypes.array.isRequired,
-};
+    var viewStyle = {
+      backgroundColor: '#ccc'
+    };
+    return (
+      <View style={viewStyle}>
+        <Text style={textStyle}>{this.props.title}</Text>
+      </View>
+    );
+  }
+}
 
+class SectionItem extends Component {
+  render() {
+    return (
+      <Text style={{color:'#f00'}}>{this.props.title}</Text>
+    );
+  }
+}
 
 class Cell extends Component {
   render() {
     return (
       <View style={{height:30}}>
-        <Text>{this.props.item}</Text>
+        <CheckBox
+		title={this.props.item}
+		checked={this.props.selected[this.props.index]}
+		onPress={() => {this.props.onSelect(this.props.index);}}
+	/>
       </View>
     );
   }
@@ -47,86 +70,50 @@ class Cell extends Component {
 export default class GenerateScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { props };
+
+    this.state = {
+      data: {
+        C: ['CS201','CS204','CS300','CS301','CS305','CS402'],
+        E: ['ENG101','ENG102'],
+        H: ['HIST191','HIST192','HUM201','HUM202','HUM203'],
+        M: ['MATH101','MATH102','MATH201','MATH203','MATH204'],
+        N: ['NS101','NS102'],
+        S: ['SPS101','SPS102','SPS303'],
+        T: ['TLL001','TLL101','TLL102'],
+      },
+      selected: []
+    };
   }
+
   static navigationOptions = {
     header: null,
   };
 
- clickme = () => {
-    var data = this.state.PickerValue;
-    if (data == "") {
-      alert("Please Select a Option");
-    } else {
-      alert(data);
-      this._navigateTo('TimePref');
-    }
+  _navigateTo = (routeName: string) => {
+    this.props.navigation.navigate(routeName);
+  };
 
-  }
-
-_navigateTo = (routeName: string) => {
-  this.props.navigation.navigate(routeName);
-};
   render() {
-    const state = this.state;
 
-    let dataLECTURE = [
-      { value: 'ANTH', },
-      { value: 'BİO', },                      // it was not shown //
-      { value: 'CS', },
-      { value: "HUM", },
-      { value: 'İE', },
-      { value: 'MATH', },
-      { value: 'ME', },
-    ];
-
-    let dataNUMBER = [
-
-      { value: '101', },
-      { value: '102', },                      // shown in label 2 //
-      { value: '201', },
-      { value: '203', },
-      { value: "204", },
-      { value: '301', },
-      { value: '305', },
-    ];
-var AlphabetListView = require('react-native-alphabetlistview')
     return (
 
       <View style={styles.container}>
 
-        <Dropdown
-          label='LECTURE'             // Label 1 in expo project it was not shown //
-          data={dataLECTURE}
-        />
-        <Dropdown 
-          label='Course Number'       // Label 2 in expo project it was not shown //
-          data={dataNUMBER}
-        />
+	<Button title="Time Preferences" onPress={() => { this._navigateTo('TimePref')}} />
 
- <Button title="Time Preferences" onPress={this.clickme} />
+	<AlphabetListView
+        data={this.state.data}
+        cell={Cell}
+	cellProps={this.state.selected}
+        cellHeight={30}
+	onCellSelect={(index) => {alert("Selected " + index); let selected = [..this.state.selected]; selected[index] = true; this.setState({selected}); }}
+        sectionListItem={SectionItem}
+        sectionHeader={SectionHeader}
+        sectionHeaderHeight={22.5}
+      	/>
 
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
-         <MultipleChoice 
-         options= {[
-           'kerem' , ' mert' , 'gurhan'
-         /*  <AlphabetListView
-           data={dataLECTURE}
-      /* cell={Cell}
-           cellHeight={50} 
-           sectionHeaderHeight={12.5}
-           /> */
+	
 
-           ]}
-
-            selectedOptions={[]}
-            maxSelectedOptions= {2}
-            onSelection= {(option)=>alert(option + 'was selected!')}
-            />
-
-          </View>
-        </ScrollView>
       </View>
     );
 
