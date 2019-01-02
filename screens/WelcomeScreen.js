@@ -1,5 +1,4 @@
 import React from 'react';
-import { ExpoLinksView } from '@expo/samples';
 import {
   Image,
   Platform,

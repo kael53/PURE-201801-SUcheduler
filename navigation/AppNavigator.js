@@ -1,5 +1,5 @@
 import React from 'react';
-import { createSwitchNavigator,createStackNavigator } from 'react-navigation';
+import { createSwitchNavigator,createStackNavigator, createAppContainer } from 'react-navigation';
 
 import WelcomeScreen from '../screens/WelcomeScreen';
 import MainTabNavigator from './MainTabNavigator';
@@ -14,7 +14,7 @@ const TimePreferenceStack = createStackNavigator({
 });
 TimePreferenceStack.navigationOptions = {
 };
-export default createSwitchNavigator({
+export default createAppContainer(createSwitchNavigator({
   // You could add another route here for authentication.
   // Read more at https://reactnavigation.org/docs/en/auth-flow.html
 
@@ -27,4 +27,4 @@ export default createSwitchNavigator({
   TimePreferenceStack
 
 
-});
+}));

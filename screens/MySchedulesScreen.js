@@ -1,6 +1,5 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View, Text, TouchableOpacity, Alert} from 'react-native';
-import { ExpoLinksView } from '@expo/samples';
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
 import {Component }  from 'react' ;
 
