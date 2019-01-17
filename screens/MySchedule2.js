@@ -9,7 +9,7 @@ export default class MySchedule2 extends React.Component {
   static navigationOptions = {
     title: 'Schedule1',
     headerStyle: {
-      backgroundColor: '#11ABD8'
+      backgroundColor: 'lightblue'
     }
   };
 
