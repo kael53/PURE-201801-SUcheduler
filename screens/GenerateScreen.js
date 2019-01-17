@@ -1,4 +1,4 @@
-import React, {Component} from 'react'; import {
+import React, { Component } from 'react'; import {
   Image,
   Platform,
   ScrollView,
@@ -8,6 +8,7 @@ import React, {Component} from 'react'; import {
   Picker,
   View,
   Button,
+  FlatList
 } from 'react-native';
 import { CheckBox } from 'react-native-elements'
 import { WebBrowser } from 'expo';
@@ -15,13 +16,17 @@ import { MonoText } from '../components/StyledText';
 import PropTypes from 'prop-types';
 import AlphaScrollFlatList from 'alpha-scroll-flat-list';
 
+
+
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, paddingTop: 60, backgroundColor: '#fff' }, //padding --> yanlardaki bosluk, padding top ==> ustteki bosluk
+  container: { flex: 3, padding: 20, paddingTop: 60, backgroundColor: '#fff', height: 100 }, //padding --> yanlardaki bosluk, padding top ==> ustteki bosluk
   head: { height: 32, backgroundColor: '#f1f8ff' },
   wrapper: { flexDirection: 'row' },
   title: { flex: 2, backgroundColor: '#f6f1fa' },
   row: { height: 32 },
-  text: { textAlign: 'center' }
+  text: { textAlign: 'center' },
+  button: { flex: 1, padding: 20, paddingTop: 60, backgroundColor: '#fff', height: 100 }, //padding --> yanlardaki bosluk, padding top ==> ustteki bosluk
+
 });
 
 class MyListItem extends React.Component {
@@ -43,37 +48,55 @@ class MyListItem extends React.Component {
   }
 }
 
+class SelectedItem extends React.Component {
+  render() {
+    <View>
+      <Text style={{ color: "blue" }}>
+        {this.props.name}
+      </Text>
+    </View>
+  }
+
+
+
+}
+
 export default class GenerateScreen extends React.Component {
+  static navigationOptions = {
+    title: 'Generate',
+      headerStyle: {
+      backgroundColor: 'lightblue'
+    }
+  };
+
   constructor(props) {
     super(props);
 
     this.state = {
       data: [
-	{name:'CS201', title:'Intro. to Computing'},
-	{name:'CS204', title:'Advanced Programming'},
-	{name:'CS300', title:'Data Structures'},
-	{name:'CS301', title:'Algorithms'},
-	{name:'CS305', title:'Programming Languages'},
-	{name:'CS402', title:'Compiler Design'},
-        {name:'ENG101', title:'English I'},
-	{name:'ENG102', title:'English II'},
-        {name:'HIST191', title:'History I'},
-	{name:'HIST192', title:'History II'},
-	{name:'HUM201', title:'Humanities I'},
-	{name:'HUM202', title:'Humanities II'},
-	{name:'HUM203', title:'Humanities III'},
-{name: 'MATH101', title: 'MATH'},{name: 'MATH102', title: 'MATH'},{name: 'MATH201', title: 'MATH'},{name: 'MATH203', title: 'MATH'},{name: 'MATH204', title: 'MATH'},
-{name: 'NS101', title: 'NS'},{name: 'NS102', title: 'NS'},
-{name: 'SPS101', title: 'SPS'},{name: 'SPS102', title: 'SPS'},{name: 'SPS303', title: 'SPS'},
-{name: 'TLL001', title: 'TLL'},{name: 'TLL101', title: 'TLL'},{name: 'TLL102', title: 'TLL'},
+        { name: 'CS201', title: 'Intro. to Computing' },
+        { name: 'CS204', title: 'Advanced Programming' },
+        { name: 'CS300', title: 'Data Structures' },
+        { name: 'CS301', title: 'Algorithms' },
+        { name: 'CS305', title: 'Programming Languages' },
+        { name: 'CS402', title: 'Compiler Design' },
+        { name: 'ENG101', title: 'English I' },
+        { name: 'ENG102', title: 'English II' },
+        { name: 'HIST191', title: 'History I' },
+        { name: 'HIST192', title: 'History II' },
+        { name: 'HUM201', title: 'Humanities I' },
+        { name: 'HUM202', title: 'Humanities II' },
+        { name: 'HUM203', title: 'Humanities III' },
+        { name: 'MATH101', title: 'MATH' }, { name: 'MATH102', title: 'MATH' }, { name: 'MATH201', title: 'MATH' }, { name: 'MATH203', title: 'MATH' }, { name: 'MATH204', title: 'MATH' },
+        { name: 'NS101', title: 'NS' }, { name: 'NS102', title: 'NS' },
+        { name: 'SPS101', title: 'SPS' }, { name: 'SPS102', title: 'SPS' }, { name: 'SPS303', title: 'SPS' },
+        { name: 'TLL001', title: 'TLL' }, { name: 'TLL101', title: 'TLL' }, { name: 'TLL102', title: 'TLL' },
       ],
       selected: (new Map(): Map<string, boolean>)
     };
   }
 
-  static navigationOptions = {
-    header: null,
-  };
+
 
   _navigateTo = (routeName: string) => {
     this.props.navigation.navigate(routeName);
@@ -87,18 +110,20 @@ export default class GenerateScreen extends React.Component {
       // copy the map rather than modifying state.
       const selected = new Map(state.selected);
       selected.set(name, !selected.get(name)); // toggle
-      return {selected};
+      return { selected };
     });
   };
 
-  _renderItem = ({item}) => (
+  _renderItem = ({ item }) => (
     <MyListItem
       name={item.name}
       onPressItem={this._onPressItem}
       selected={!!this.state.selected.get(item.name)}
       title={item.title}
     />
+
   );
+
 
   render() {
 
@@ -106,18 +131,25 @@ export default class GenerateScreen extends React.Component {
 
       <View style={styles.container}>
 
-	<AlphaScrollFlatList
+        <AlphaScrollFlatList
           data={this.state.data.sort((prev, next) => prev.name.localeCompare(next.name))}
-	  extraData={this.state}
+          extraData={this.state}
           keyExtractor={this._keyExtractor}
           renderItem={this._renderItem}
           reverse={false}
           itemHeight={500}
         />
 
-	<Button title="Time Preferences" onPress={() => { this._navigateTo('TimePref')}} />
 
+        <Button title="Time Preferences" style={styles.button} onPress={() => { this._navigateTo('TimePref') }} />
+       
+        <FlatList
+          data= {this.state.data.filter(item => item.selected)}
+          keyExtractor={this._keyExtractor}
+          renderItem={this._renderItem}
+          />
       </View>
+
     );
 
 

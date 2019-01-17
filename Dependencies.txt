@@ -1,0 +1,3 @@
+react-native-table-component
+react-native-elements
+alpha-scroll-flat-list

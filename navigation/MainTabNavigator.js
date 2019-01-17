@@ -12,9 +12,6 @@ import MySchedule3 from '../screens/MySchedule3';
 import MySchedule4 from '../screens/MySchedule4';
 import TimePreference from '../screens/TimePreference';
 
-
-
-
 const GenerateStack = createStackNavigator({
   Generate: GenerateScreen,
 });
@@ -42,17 +39,15 @@ MySchedulesStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? `ios-link${focused ? '' : '-outline'}` : 'md-link'}
-    />
+       name={
+        Platform.OS === 'ios'
+          ? `ios-list${focused ? '' : ''}`
+          : 'md-information-circle'
+      }
+       />
   ),
 };
 
-const TimePreferenceStack = createStackNavigator({
-  TimePref: TimePreference,
-});
-
-TimePreferenceStack.navigationOptions = {
-};
 
 const SettingsStack = createStackNavigator({
   Settings: SettingsScreen,
@@ -63,13 +58,26 @@ SettingsStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? `ios-options${focused ? '' : '-outline'}` : 'md-options'}
+      name={Platform.OS === 'ios' ? `ios-settings${focused ? '' : ''}` : 'md-options'}
     />
   ),
 };
 
+      
 export default createBottomTabNavigator({
+
   GenerateStack,
   MySchedulesStack,
   SettingsStack,
-});
+},
+ {
+   tabBarOptions: {
+ 
+  activeBackgroundColor: 'rgb(226,226,226)',
+
+  style: {
+    backgroundColor: 'white',
+  },
+} 
+  }
+);

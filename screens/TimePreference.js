@@ -10,7 +10,7 @@ export default class TimePreference extends React.Component {
   static navigationOptions = {
     title: 'Time Preferences',
     headerStyle: {
-      backgroundColor: '#11ABD8'
+      backgroundColor: 'lightblue'
     }
   };
 

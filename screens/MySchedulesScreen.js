@@ -6,13 +6,9 @@ import {Component }  from 'react' ;
 export default class MySchedulesScreen extends React.Component {
 
   static navigationOptions = {
-
-
     title: 'My Schedules',
-    headerStyle: {
-
-      backgroundColor: '#11ABD8'
-
+      headerStyle: {
+      backgroundColor: 'lightblue'
     }
   };
 
