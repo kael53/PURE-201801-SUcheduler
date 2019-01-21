@@ -22,7 +22,7 @@ _navigateTo = (routeName: string) => {
   const elementButton = (value: string) => (
     <TouchableOpacity onPress={() => this._navigateTo(value)}>
     <View style={styles.btn}>
-    <Text style={styles.text}>{value}</Text>
+    <Text style={styles.textCol}>{value}</Text>
     </View>
     </TouchableOpacity>
     );
@@ -32,7 +32,7 @@ _navigateTo = (routeName: string) => {
     tableTitle: [elementButton('Schedule1'),elementButton('Schedule2'),elementButton('Schedule3'),elementButton('Schedule4')],
     tableData: [
     ['12345', '12396', '12347','12348', '12349', '12350'],
-    ['', '', '','', '', ''],
+    ['20966', '20516', '21082','20878', '20968', '20519'],
     ['', '', '','', '', ''],
     ['11002', '21352', '52103','20743', '15207', '12310'],
     ]
@@ -45,7 +45,7 @@ _navigateTo = (routeName: string) => {
     return (
       <View style={styles.container}>
       <Table>
-      <Row data={state.tableHead} flexArr={[1.99,6]} style={styles.head} textStyle={styles.text}/>    
+      <Row data={state.tableHead} flexArr={[1.99,6]} style={styles.head} textStyle={styles.textHead}/>    
       <TableWrapper style={styles.wrapper}>
       <Col data={state.tableTitle} style={styles.title} heightArr={[32,32]} textStyle={styles.text}/>
       <Rows data={state.tableData} flexArr={[1, 1, 1, 1, 1, 1]} style={styles.row} textStyle={styles.text}/>
@@ -60,8 +60,10 @@ const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, paddingTop: 60, backgroundColor: '#fff' }, //padding --> yanlardaki bosluk, padding top ==> ustteki bosluk
   head: {  height: 32,  backgroundColor: '#f1f8ff'  },
   wrapper: { flexDirection: 'row' },
-  title: { flex: 2, backgroundColor: '#f6f1fa' },
+  title: { flex: 2, backgroundColor: '#f6f1fa'},
   row: {  height: 32  },
-  text: { textAlign: 'center' }
+  text: { textAlign: 'center', fontSize: 14 },
+  textHead:{ textAlign: 'center', fontSize: 18 },
+  textCol: { textAlign: 'center', fontSize: 18 },
 });
 

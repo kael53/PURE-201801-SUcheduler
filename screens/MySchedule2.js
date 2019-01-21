@@ -7,7 +7,7 @@ import Icons from 'react-native-vector-icons/MaterialIcons';
 export default class MySchedule2 extends React.Component {
 
   static navigationOptions = {
-    title: 'Schedule1',
+    title: 'Schedule2',
     headerStyle: {
       backgroundColor: 'lightblue'
     }
@@ -31,15 +31,15 @@ export default class MySchedule2 extends React.Component {
     tableData: [
       ['', '', '','', ''],
       ['', '', '','', ''],
-      ['', '', '','', ''],
-      ['', '', '','', ''],
-      ['', '', '','', ''],
-      ['', '', '','', ''],
-      ['', '', '','', ''],
-      ['', '', '','', ''],
-      ['', '', '','', ''],
-      ['', '', '','', ''],
-      ['', '', '','', ''],
+      ['', 'HUM 202', '','', 'SPS303'],
+      ['', 'HUM202', '','', 'SPS 303'],
+      ['', '', '','', 'MATH 201'],
+      ['', 'CS 300', '','HUM 202D', ''],
+      ['CS 300', 'CS 300', '','MATH 201', 'SPS 303R'],
+      ['', '', '','MATH 201', ''],
+      ['', '', '','CS 300R', ''],
+      ['MATH 201R', '', '','CS 300R', ''],
+      ['MATH 201R', '', '','', ''],
       ['', '', '','', '']
     ]
   }
@@ -79,7 +79,7 @@ handleBackButtonClick() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, paddingTop: 100, backgroundColor: '#fff' }, //padding --> yanlardaki bosluk, padding top ==> ustteki bosluk
+  container: { flex: 1, padding: 20, paddingTop: 60, backgroundColor: '#fff' }, //padding --> yanlardaki bosluk, padding top ==> ustteki bosluk
   head: {  height: 32,  backgroundColor: '#f1f8ff'  },
   wrapper: { flexDirection: 'row' },
   title: { flex: 0.8, backgroundColor: '#f6f1fa' },

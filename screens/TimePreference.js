@@ -1,12 +1,13 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View, Text, TouchableOpacity, BackHandler, AppRegistry } from 'react-native';
+import { ScrollView, StyleSheet, View, Text, TouchableOpacity, BackHandler, AppRegistry, Button } from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
 import { Component } from 'react';
 import Icons from 'react-native-vector-icons/MaterialIcons';
-import SimpleToggleButton from '../components/SimpleToggleButton'
+import SimpleToggleButton from '../components/SimpleToggleButton';
+import MultipleChoice from 'rn-multiple-choice';
 
 export default class TimePreference extends React.Component {
-  
+
   static navigationOptions = {
     title: 'Time Preferences',
     headerStyle: {
@@ -27,7 +28,7 @@ export default class TimePreference extends React.Component {
     this.props.navigation.navigate('MySchedules');
     return true;
   };
-  
+
   constructor(props) {
     super(props);
     this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
@@ -42,7 +43,7 @@ export default class TimePreference extends React.Component {
 
     timeButton = () => (
       <View style={styles.container2}>
-        <SimpleToggleButton/>
+        <SimpleToggleButton />
       </View>
     );
 
@@ -61,15 +62,15 @@ export default class TimePreference extends React.Component {
         [timeButton(), timeButton(), timeButton(), timeButton(), timeButton()],
         [timeButton(), timeButton(), timeButton(), timeButton(), timeButton()],
         [timeButton(), timeButton(), timeButton(), timeButton(), timeButton()],
-         [timeButton(), timeButton(), timeButton(), timeButton(), timeButton()]
+        [timeButton(), timeButton(), timeButton(), timeButton(), timeButton()]
       ],
-      
+
     }
   }
   _onStateChange(newState) {
     const value = newState ? "ON" : "OFF"
     this.setState({ toggleState: value })
-      //could be used for implementing selected free times
+    //could be used for implementing selected free times
   };
   render() {
     const state = this.state;
@@ -83,13 +84,23 @@ export default class TimePreference extends React.Component {
             <Rows data={state.tableData} flexArr={[1, 1, 1, 1, 1]} style={styles.row} textStyle={styles.text} />
           </TableWrapper>
         </Table>
+
+          <MultipleChoice style={styles.container}
+         options= {[
+           'Try 1 Day Free' , 'Minimize Density'
+            ]}
+            selectedOptions={[]}
+            maxSelectedOptions= {1}
+            //onSelection= {(option)=>alert(option + 'was selected!')}
+            />
+            <Button title="Generate!" style={styles.container} onPress={() => {}} />
       </View>
     )
   }
 }
-
+  
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, paddingTop: 100 }, //padding --> yanlardaki bosluk, padding top ==> ustteki bosluk
+  container: { flex: 1, padding: 20, paddingTop: 20 }, //padding --> yanlardaki bosluk, padding top ==> ustteki bosluk
 
   container2: {
     flex: 0,
@@ -99,18 +110,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'white',
   },
+  container3: {
+    flex: 0,
+    paddingTop: 20,
+  },
   head: { height: 32, backgroundColor: '#f1f8ff' },
   wrapper: { flexDirection: 'row' },
   title: { flex: 0.8, backgroundColor: '#f6f1fa' },
-  row: {flex: 0, padding: 0, paddingTop: 0, height: 32 },
-  text: { textAlign: 'center'},
+  row: { flex: 0, padding: 0, paddingTop: 0, height: 32 },
+  text: { textAlign: 'center' },
   headText: { textAlign: 'center', fontSize: 24 },
   btn: {
     alignItems: 'center',
     backgroundColor: '#2196F3'
   },
 
+
 });
 
 
-AppRegistry.registerComponent('PURE-201801-SUcheduler', () => PURE-201801-SUcheduler)
+AppRegistry.registerComponent('PURE-201801-SUcheduler', () => PURE - 201801 - SUcheduler)
