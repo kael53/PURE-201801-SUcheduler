@@ -8,11 +8,11 @@ import SchedulesScreen from '../screens/SchedulesScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import ScheduleScreen from '../screens/ScheduleScreen';
 import TimePreference from '../screens/TimePreference';
-import AddCourses from '../screens/AddCourses';
+import AddCourseScreen from '../screens/AddCourseScreen';
 
 const GenerateStack = createStackNavigator({
   Generate: GenerateScreen,
-  AddCourse: AddCourses,
+  AddCourse: AddCourseScreen,
   TimePref: TimePreference
 });
 
@@ -31,7 +31,7 @@ GenerateStack.navigationOptions = {
 };
 
 const MySchedulesStack = createStackNavigator({
-  MySchedules: MySchedulesScreen,
+  Schedules: SchedulesScreen,
   Schedule: ScheduleScreen
 });
 

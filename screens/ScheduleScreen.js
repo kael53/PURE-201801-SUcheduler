@@ -4,7 +4,7 @@ import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-componen
 import {Component }  from 'react' ;
 import Icons from 'react-native-vector-icons/MaterialIcons';
 
-export default class Schedule extends React.Component {
+export default class ScheduleScreen extends React.Component {
 
   static navigationOptions = {
     headerStyle: {

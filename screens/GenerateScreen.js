@@ -49,6 +49,7 @@ export default class GenerateScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      data: [{name: 'CS201', title:'Intro. to Computing'}, {name: 'CS204', title:'Advanced Programming'}],
       selected: (new Map(): Map<string, boolean>)
     };
   }
@@ -57,6 +58,27 @@ export default class GenerateScreen extends React.Component {
     this.props.navigation.navigate(routeName);
   };
 
+  _keyExtractor = (item, index) => item.name;
+
+  _onPressItem = (name: string) => {
+    // updater functions are preferred for transactional updates
+    this.setState((state) => {
+      // copy the map rather than modifying state.
+      const selected = new Map(state.selected);
+      selected.set(name, !selected.get(name)); // toggle
+      return { selected };
+    });
+  };
+
+  _renderItem = ({ item }) => (
+    <SelectedItem
+      name={item.name}
+      onPressItem={this._onPressItem}
+      selected={!!this.state.selected.get(item.name)}
+      title={item.title}
+    />
+  );
+
   render() {
     return (
       <View style={styles.container}>
@@ -64,7 +86,7 @@ export default class GenerateScreen extends React.Component {
         <Button title="Time Preferences" style={styles.button} onPress={() => { this._navigateTo('TimePref') }} />
 
         <FlatList style={StyleSheet.selected}
-          data= {this.state.data.filter(item => item.selected)}
+          data= {this.state.data.filter(item => this.state.selected.has(item) && this.state.selected[item])}
           keyExtractor={this._keyExtractor}
           renderItem={this._renderItem}
           />
