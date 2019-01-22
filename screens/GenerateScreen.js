@@ -92,6 +92,5 @@ export default class GenerateScreen extends React.Component {
           />
       </View>
     );
-
   }
 }

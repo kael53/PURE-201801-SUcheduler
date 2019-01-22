@@ -1,13 +1,13 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View, Text, TouchableOpacity, Alert} from 'react-native';
+import { ScrollView, StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
-import {Component }  from 'react' ;
+import { Component } from 'react';
 
 export default class SchedulesScreen extends React.Component {
 
   static navigationOptions = {
     title: 'My Schedules',
-      headerStyle: {
+    headerStyle: {
       backgroundColor: 'lightblue'
     }
   };
@@ -54,18 +54,18 @@ _navigateTo = (routeName: string, eProps: object) => {
       </TableWrapper>
       </Table>
       </View>
-      )
+    )
   }
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, paddingTop: 60, backgroundColor: '#fff' }, //padding --> yanlardaki bosluk, padding top ==> ustteki bosluk
-  head: {  height: 32,  backgroundColor: '#f1f8ff'  },
+  head: { height: 32, backgroundColor: '#f1f8ff' },
   wrapper: { flexDirection: 'row' },
-  title: { flex: 2, backgroundColor: '#f6f1fa'},
-  row: {  height: 32  },
+  title: { flex: 2, backgroundColor: '#f6f1fa' },
+  row: { height: 32 },
   text: { textAlign: 'center', fontSize: 14 },
-  textHead:{ textAlign: 'center', fontSize: 18 },
+  textHead: { textAlign: 'center', fontSize: 18 },
   textCol: { textAlign: 'center', fontSize: 18 },
 });
 

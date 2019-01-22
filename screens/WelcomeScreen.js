@@ -15,12 +15,6 @@ export default class WelcomeScreen extends React.Component {
     title: 'Welcome',
   };
 
-  componentDidMount() {
-    if (this.props.skipLoadingScreen == true)
-      this._navigateTo('Generate');
-    else
-      this.timeoutHandle = setTimeout(() => { this._navigateTo('Generate') }, 5000);
-  }
 
   componentWillUnmount() {
     clearTimeout(this.timeoutHandle);
@@ -30,13 +24,16 @@ export default class WelcomeScreen extends React.Component {
     this.props.navigation.navigate(routeName);
   }
 
+  componentDidMount() {
+    if (this.props.skipLoadingScreen == true)
+      this._navigateTo('Generate');
+    else
+      this.timeoutHandle = setTimeout(() => { this._navigateTo('Generate') }, 5000);
+  }
 
   render() {
     return (
-
-      //return welcome Screen for a while, than generate
       <View style={styles.container} contentContainerStyle={styles.contentContainer}>
-
         <View style={styles.welcomeContainer}>
           <Image
             source={
@@ -47,7 +44,6 @@ export default class WelcomeScreen extends React.Component {
             style={styles.welcomeImage}
           />
         </View>
-
       </View>
     );
   }
@@ -70,7 +66,7 @@ const styles = StyleSheet.create({
     paddingTop: 30,
   },
   welcomeContainer: {
-    
+
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
