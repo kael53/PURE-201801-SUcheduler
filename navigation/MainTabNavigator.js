@@ -4,16 +4,16 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from '../components/TabBarIcon';
 import GenerateScreen from '../screens/GenerateScreen';
-import MySchedulesScreen from '../screens/MySchedulesScreen';
+import SchedulesScreen from '../screens/SchedulesScreen';
 import SettingsScreen from '../screens/SettingsScreen';
-import MySchedule1 from '../screens/MySchedule1';
-import MySchedule2 from '../screens/MySchedule2';
-import MySchedule3 from '../screens/MySchedule3';
-import MySchedule4 from '../screens/MySchedule4';
+import ScheduleScreen from '../screens/ScheduleScreen';
 import TimePreference from '../screens/TimePreference';
+import AddCourses from '../screens/AddCourses';
 
 const GenerateStack = createStackNavigator({
   Generate: GenerateScreen,
+  AddCourse: AddCourses,
+  TimePref: TimePreference
 });
 
 GenerateStack.navigationOptions = {
@@ -32,6 +32,7 @@ GenerateStack.navigationOptions = {
 
 const MySchedulesStack = createStackNavigator({
   MySchedules: MySchedulesScreen,
+  Schedule: ScheduleScreen
 });
 
 MySchedulesStack.navigationOptions = {
@@ -63,9 +64,7 @@ SettingsStack.navigationOptions = {
   ),
 };
 
-      
 export default createBottomTabNavigator({
-
   GenerateStack,
   MySchedulesStack,
   SettingsStack,

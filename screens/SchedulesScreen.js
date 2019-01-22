@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, View, Text, TouchableOpacity, Alert} from 'reac
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
 import {Component }  from 'react' ;
 
-export default class MySchedulesScreen extends React.Component {
+export default class SchedulesScreen extends React.Component {
 
   static navigationOptions = {
     title: 'My Schedules',
@@ -12,30 +12,32 @@ export default class MySchedulesScreen extends React.Component {
     }
   };
 
-_navigateTo = (routeName: string) => {
+_navigateTo = (routeName: string, eProps: object) => {
   this.props.navigation.navigate(routeName);
+  //add eProps to this.props
 };
+
+//getSchedule param: schedule name return: schedule object from the database
+//getSchedules return: schedule names from the database
 
  constructor(props) {     //CRN no table, names(schedule1 etc) are buttons that calls schedule table
   super(props);
 
   const elementButton = (value: string) => (
-    <TouchableOpacity onPress={() => this._navigateTo(value)}>
+    <TouchableOpacity onPress={() => this._navigateTo('Schedule', getSchedule(value))}>
     <View style={styles.btn}>
     <Text style={styles.textCol}>{value}</Text>
     </View>
     </TouchableOpacity>
     );
 
+  var schedules = getSchedules();
+  var crns = getCRNs(schedules);
+
   this.state = {
     tableHead: ['', 'CRN codes'],
-    tableTitle: [elementButton('Schedule1'),elementButton('Schedule2'),elementButton('Schedule3'),elementButton('Schedule4')],
-    tableData: [
-    ['12345', '12396', '12347','12348', '12349', '12350'],
-    ['20966', '20516', '21082','20878', '20968', '20519'],
-    ['', '', '','', '', ''],
-    ['11002', '21352', '52103','20743', '15207', '12310'],
-    ]
+    tableTitle: schedules,
+    tableData: crns
   }
 };
 
@@ -45,7 +47,7 @@ _navigateTo = (routeName: string) => {
     return (
       <View style={styles.container}>
       <Table>
-      <Row data={state.tableHead} flexArr={[1.99,6]} style={styles.head} textStyle={styles.textHead}/>    
+      <Row data={state.tableHead} flexArr={[1.99,6]} style={styles.head} textStyle={styles.textHead}/>
       <TableWrapper style={styles.wrapper}>
       <Col data={state.tableTitle} style={styles.title} heightArr={[32,32]} textStyle={styles.text}/>
       <Rows data={state.tableData} flexArr={[1, 1, 1, 1, 1, 1]} style={styles.row} textStyle={styles.text}/>
