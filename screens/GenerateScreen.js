@@ -127,11 +127,8 @@ export default class GenerateScreen extends React.Component {
 
 
   render() {
-
     return (
-
       <View style={styles.container}>
-
         <AlphaScrollFlatList
           data={this.state.data.sort((prev, next) => prev.name.localeCompare(next.name))}
           extraData={this.state}
@@ -140,20 +137,16 @@ export default class GenerateScreen extends React.Component {
           reverse={false}
           itemHeight={500}
         />
+        <Button title="Time Preferences" style={styles.button} onPress={() => { this._navigateTo('TimePref') }} />       
+      </View>
+    );
+ } //render closed expectation  : ! Please Dont change * GBoss *
+
+} //export   closed expectation : ! Please Dont change * GBoss *
 
 
-        <Button title="Time Preferences" style={styles.button} onPress={() => { this._navigateTo('TimePref') }} />
-       
-        <FlatList style={StyleSheet.selected}
+ <FlatList style={StyleSheet.selected}
           data= {this.state.data.filter(item => item.selected)}
           keyExtractor={this._keyExtractor}
           renderItem={this._renderItem}
           />
-      </View>
-
-    );
-
-
-  } //render closed expectation  : ! Please Dont change * GBoss *
-
-} //export   closed expectation : ! Please Dont change * GBoss *
