@@ -56,13 +56,11 @@ export default class GenerateScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: []
+      data: [],
+      freeTimes: [],
+      prefs: []
     };
   }
-
-  _navigateTo = (routeName: string) => {
-    this.props.navigation.navigate(routeName);
-  };
 
   _keyExtractor = (item, index) => index.toString();
 
@@ -81,17 +79,20 @@ export default class GenerateScreen extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.navigation.getParam('data', []).length !== prevProps.navigation.getParam('data', []).length) {
-      console.log(prevProps.navigation.getParam('data', []));
       this.setState({ data: [...prevState.data, ...prevProps.navigation.getParam('data', [{}])] });
       this.props.navigation.setParams({ data: [] });
     }
+    if (this.props.navigation.getParam('freeTimes', []).length !== prevProps.navigation.getParam('freeTimes', []).length) {
+    }
+    if (this.props.navigation.getParam('prefs', []).length !== prevProps.navigation.getParam('prefs', []).length) {
+    }
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Button title="Add Courses" style={styles.button} onPress={() => { this._navigateTo('AddCourse') }} />
-        <Button title="Time Preferences" style={styles.button} onPress={() => { this._navigateTo('TimePref') }} />
+        <Button title="Add Courses" style={styles.button} onPress={() => { this.props.navigation.navigate('AddCourse', { selected: this.state.data }) }} />
+        <Button title="Time Preferences" style={styles.button} onPress={() => { this.props.navigation.navigate('TimePref') }} />
 
         <FlatList style={StyleSheet.selected}
           data= {this.state.data}

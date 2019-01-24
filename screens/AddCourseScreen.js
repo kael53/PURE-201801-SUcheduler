@@ -77,6 +77,7 @@ export default class AddCourseScreen extends React.Component {
 
   constructor(props) {
     super(props);
+    const selecteds = this.props.navigation.state.params.selected;
 
     this.state = {
       data: [
@@ -97,7 +98,7 @@ export default class AddCourseScreen extends React.Component {
         { name: 'NS101', title: 'Science of Nature I' }, { name: 'NS102', title: 'Science of Nature II' },
         { name: 'SPS101', title: 'Humanity and Society I' }, { name: 'SPS102', title: 'Humanity and Society II' }, { name: 'SPS303', title: 'Law and Ethics' },
         { name: 'TLL001', title: 'Communication Skills in Turkish' }, { name: 'TLL101', title: 'Turkish Language and Literature I' }, { name: 'TLL102', title: 'Turkish Language and Literature II' },
-      ],
+      ].filter(item => !this.isSelected(item, selecteds), this),
       selected: (new Map(): Map<string, boolean>)
     };
   }
@@ -123,11 +124,17 @@ export default class AddCourseScreen extends React.Component {
     />
   );
 
+  isSelected = (comp, list) => {
+     var found = false;
+     list.map((item, index) => { if (item.name === comp.name) found = true; });
+     return found;
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <AlphaScrollFlatList
-          data={this.state.data.sort((prev, next) => prev.name.localeCompare(next.name))}
+          data={this.state.data.sort((prev,next) => prev.name.localeCompare(next.name))}
           extraData={this.state}
           keyExtractor={this._keyExtractor}
           renderItem={this._renderItem}
