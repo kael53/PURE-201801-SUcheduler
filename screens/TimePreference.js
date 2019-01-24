@@ -8,12 +8,28 @@ import MultipleChoice from 'rn-multiple-choice';
 
 export default class TimePreference extends React.Component {
 
-  static navigationOptions = {
+  static navigationOptions = ({ navigation }) => {
+    return {
     title: 'Time Preferences',
     headerStyle: {
       backgroundColor: 'lightblue'
-    }
+    },
+    headerRight: (
+          <Button
+                onPress={() => { navigation.navigate('Generate', { freeTimes: navigation.getParam('freeTimes')(), prefs: navigation.getParam('prefs')() }) }}
+                title="Done"
+          />
+        )
+    };
   };
+
+  componentDidMount() {
+    this.props.navigation.setParams({ freeTimes: this._freeTimes, prefs: this._prefs });
+  }
+
+  _freeTimes = () => {}
+
+  _prefs = () => {}
 
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
@@ -25,7 +41,7 @@ export default class TimePreference extends React.Component {
 
 
   handleBackButtonClick() {
-    this.props.navigation.navigate('MySchedules');
+    this.props.navigation.goBack();
     return true;
   };
 
@@ -34,7 +50,7 @@ export default class TimePreference extends React.Component {
     this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
     this._onStateChange = this._onStateChange.bind(this)
     elementButton = (value) => (
-      <TouchableOpacity onPress={() => this.props.navigation.navigate('Generate')}>
+      <TouchableOpacity onPress={() => this.handleBackButtonClick() }>
         <View style={styles.btn}>
           <Icons name={value} size={30} color='#000' style={{ marginLeft: '3%' }} />
         </View>
@@ -42,7 +58,7 @@ export default class TimePreference extends React.Component {
     );
 
     timeButton = () => (
-      <View style={styles.container2}>
+      <View>
         <SimpleToggleButton />
       </View>
     );
@@ -91,25 +107,16 @@ export default class TimePreference extends React.Component {
             ]}
             selectedOptions={[]}
             maxSelectedOptions= {1}
-            //onSelection= {(option)=>alert(option + 'was selected!')}
+            onSelection= {(option)=>alert(option + 'was selected!')}
             />
-            <Button title="Generate!" style={styles.container} onPress={() => {}} />
       </View>
     )
   }
 }
-  
+
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, paddingTop: 20 }, //padding --> yanlardaki bosluk, padding top ==> ustteki bosluk
 
-  container2: {
-    flex: 0,
-    paddingTop: 0,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
-  },
   container3: {
     flex: 0,
     paddingTop: 20,

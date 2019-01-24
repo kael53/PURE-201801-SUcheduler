@@ -48,12 +48,32 @@ class MyListItem extends React.Component {
 }
 
 export default class AddCourseScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Add Courses',
-      headerStyle: {
-      backgroundColor: 'lightblue'
-    }
+  static navigationOptions = ({ navigation }) => {
+    return {
+    	headerTitle: 'Add Courses',
+    	headerStyle: {
+      	  backgroundColor: 'lightblue'
+    	},
+    	headerRight: (
+      	  <Button
+        	onPress={() => { navigation.navigate('Generate', { data: navigation.getParam('selected')() }) }}
+        	title="Done"
+        	//color="#fff"
+      	  />
+    	)
+    };
   };
+
+  componentDidMount() {
+    this.props.navigation.setParams({ selected: this._selected });
+  }
+
+  _selected = () => {
+	let selected = [...this.state.data];
+	return selected.filter(
+		(item) => { return this.state.selected.has(item.name) && this.state.selected.get(item.name); }
+	, this);
+  }
 
   constructor(props) {
     super(props);
@@ -81,10 +101,6 @@ export default class AddCourseScreen extends React.Component {
       selected: (new Map(): Map<string, boolean>)
     };
   }
-
-  _navigateTo = (routeName: string) => {
-    this.props.navigation.navigate(routeName);
-  };
 
   _keyExtractor = (item, index) => item.name;
 
