@@ -93,7 +93,8 @@ export default class GenerateScreen extends React.Component {
       <View style={styles.container}>
         <Button title="Add Courses" style={styles.button} onPress={() => { this.props.navigation.navigate('AddCourse', { selected: this.state.data }) }} />
         <Button title="Time Preferences" style={styles.button} onPress={() => { this.props.navigation.navigate('TimePref') }} />
-
+        <Button title="Course Preferences" style={styles.button} onPress={() => { this.props.navigation.navigate('CoursePref', 
+          { selected: this.state.data }) }} />
         <FlatList style={StyleSheet.selected}
           data= {this.state.data}
           keyExtractor={this._keyExtractor}

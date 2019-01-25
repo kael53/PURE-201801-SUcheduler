@@ -8,12 +8,15 @@ import SchedulesScreen from '../screens/SchedulesScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import ScheduleScreen from '../screens/ScheduleScreen';
 import TimePreference from '../screens/TimePreference';
-import AddCourseScreen from '../screens/AddCourseScreen';
+import AddCourseScreen from '../screens/AddCourseScreen'   ;
+import CoursePreference from '../screens/CoursePreference'; 
 
 const GenerateStack = createStackNavigator({
   Generate: GenerateScreen,
   AddCourse: AddCourseScreen,
-  TimePref: TimePreference
+  TimePref: TimePreference ,
+  CoursePref: CoursePreference 
+  
 });
 
 GenerateStack.navigationOptions = {
