@@ -1,11 +1,10 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View, Text, TouchableOpacity, BackHandler, AppRegistry, Button , Platform  } from 'react-native';
 import { Component } from 'react';
-import Icons from 'react-native-vector-icons/MaterialIcons';
 import SimpleToggleButton from '../components/SimpleToggleButton';
 import MultipleChoice from 'rn-multiple-choice';
 import PropTypes from 'prop-types';
-	
+
 const styles = StyleSheet.create({
   container: { flex: 3, padding: 20, paddingTop: 60, backgroundColor: '#fff', height: 100 }, //padding --> yanlardaki bosluk, padding top ==> ustteki bosluk
   head: { height: 32, backgroundColor: '#f1f8ff' },
@@ -24,10 +23,10 @@ export default class CoursePreference extends React.Component {
     return {
     	headerTitle: 'Course Preferences',
     	headerStyle: {
-      	  backgroundColor: 'lightred' , color:'red' , 
-    	
-    	headerTintColor: 'Blue', } ,
-    	
+      	  backgroundColor: 'lightred' ,
+          color:'red' ,
+    	  headerTintColor: 'Blue',
+        },
     	headerRight: (
       	  <Button
         	onPress={() => { navigation.navigate('Generate', { data: navigation.getParam('selected')() }) }}
@@ -44,22 +43,9 @@ export default class CoursePreference extends React.Component {
        <Text style={{ color: "red" }}>
         {"Hello you have to integrate me with added courses."}
       </Text>
-        
       </View>
     );
 
   }
-}		
-		
-
-	
-
-
-
-	   	
-	   
-	
-
-	 
-  
+}
 

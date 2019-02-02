@@ -15,6 +15,7 @@ import { WebBrowser } from 'expo';
 import { MonoText } from '../components/StyledText';
 import PropTypes from 'prop-types';
 import AlphaScrollFlatList from 'alpha-scroll-flat-list';
+import db from '../config/database.js';
 
 const styles = StyleSheet.create({
   container: { flex: 3, padding: 20, paddingTop: 60, backgroundColor: '#fff', height: 100 }, //padding --> yanlardaki bosluk, padding top ==> ustteki bosluk
@@ -78,9 +79,18 @@ export default class AddCourseScreen extends React.Component {
   constructor(props) {
     super(props);
     const selecteds = this.props.navigation.state.params.selected;
+    let course = [];
+
+    db.transaction(
+	tx => { tx.executeSql('select * from course', [], (_, { rows }) =>
+		rows._array.forEach((item) => course.push({name: item.subject+item.number, title: item.description}))
+        	);
+              }
+    , (e) => console.log(e), () => this.setState({ data: course.filter(item =>!this.isSelected(item, selecteds), this) }));
 
     this.state = {
-      data: [
+      data: [],
+      /*data: [
         { name: 'CS201', title: 'Introduction to Computing' },
         { name: 'CS204', title: 'Advanced Programming' },
         { name: 'CS300', title: 'Data Structures' },
@@ -98,7 +108,7 @@ export default class AddCourseScreen extends React.Component {
         { name: 'NS101', title: 'Science of Nature I' }, { name: 'NS102', title: 'Science of Nature II' },
         { name: 'SPS101', title: 'Humanity and Society I' }, { name: 'SPS102', title: 'Humanity and Society II' }, { name: 'SPS303', title: 'Law and Ethics' },
         { name: 'TLL001', title: 'Communication Skills in Turkish' }, { name: 'TLL101', title: 'Turkish Language and Literature I' }, { name: 'TLL102', title: 'Turkish Language and Literature II' },
-      ].filter(item => !this.isSelected(item, selecteds), this),
+      ].filter(item => !this.isSelected(item, selecteds), this),*/
       selected: (new Map(): Map<string, boolean>)
     };
   }
@@ -141,8 +151,6 @@ export default class AddCourseScreen extends React.Component {
           reverse={false}
           itemHeight={500}
         />
-      
-        
       </View>
     );
 

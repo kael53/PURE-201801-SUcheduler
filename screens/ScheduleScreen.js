@@ -1,63 +1,95 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View, Text, TouchableOpacity, BackHandler} from 'react-native';
-import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
-import {Component }  from 'react' ;
-import Icons from 'react-native-vector-icons/MaterialIcons';
+import { StyleSheet, View, Text, TouchableOpacity, BackHandler} from 'react-native';
+import { Component }  from 'react' ;
+import { DataTable, Header, HeaderCell, Row, Cell } from 'react-native-data-table';
+import { ListView } from 'realm/react-native';
+import db from '../config/database.js';
 
 export default class ScheduleScreen extends React.Component {
 
-  static navigationOptions = {
-    headerStyle: {
-      backgroundColor: 'lightblue'
-    }
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: navigation.getParam('title', 'Schedule'),
+      headerStyle: {
+        backgroundColor: 'lightblue'
+      }
+    };
   };
 
- constructor(props) {
-  super(props);
-  this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
-
-  const elementButton = (value) => (
-    <TouchableOpacity onPress={() => this.props.navigation.navigate('Schedules')}> //change it to return
-    <View style={styles.btn}>
-    <Icons name={value} size={30} color='#000' style={{marginLeft: '3%'}}/>
-    </View>
-    </TouchableOpacity>
-    );
-
-    this.state = {
-      tableHead: [elementButton('arrow-back'), 'Mon', 'Tue', 'Wed', 'Thr', 'Fri'],
-      tableTitle: ['8.40\n9.30','9.40\n10.30','10.40\n11.30','11.40\n12.30','12.40\n13.30','13.40\n14.30','14.40\n15.30','15.40\n16.30','16.40\n17.30','17.40\n18.30','18.40\n19.30','19.40\n20.30'],
-      tableData: this.props.schedule
-    }
+  constructor(props) {
+    super(props);
+    this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
+    this.ds = new ListView.DataSource({
+        rowHasChanged: (row1, row2) => row1 !== row2,
+    });
+    schedule = []; for (var i = 0; i < 12; i++) schedule.push({hour:(8+i)+':40 - '+(9+i)+':30', day:Array(5).fill('')});
+    this.state = { schedule: schedule, ds: this.ds.cloneWithRows(schedule) };
   };
 
   componentWillMount() {
-    this.navigationOptions.title = this.props.title;
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
-}
+    const crns = this.props.navigation.state.params.schedule;
+    schedule = []; for (var i = 0; i < 12; i++) schedule.push({hour:(8+i)+':40', day:Array(5).fill('')});
 
-componentWillUnmount() {
+    db.transaction(
+        tx => { tx.executeSql('select session.cn, session.type, session.section, date.day, date.start, date.end from session inner join date on session.crn = date.crn where session.crn in ('+crns+')', [], (_, { rows }) => {
+		rows._array.forEach((item) => {
+				for (var i = 0; i < (item.end - item.start + 1); i++)
+					schedule[item.start + i].day[item.day-1] = item.cn+item.type + ' - ' + item.section;
+				this.setState({ schedule: schedule, ds: this.ds.cloneWithRows(schedule) });
+			});
+		});
+              }
+    , (e) => console.log(e), () => console.log("success"));
+
+
+  }
+
+  componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
-}
+  }
 
-handleBackButtonClick() {
-    this.props.navigation.navigate('Schedules');
+  handleBackButtonClick() {
+    this.props.navigation.goBack();
     return true;
-}
+  }
+
+  renderRow(item) {
+      console.log(JSON.stringify(item));
+      return (
+        <Row>
+	  <Cell width={0.7}>{item.hour}</Cell>
+          <Cell numberOfLines={2} width={1.1}>{item.day[0]}</Cell>
+          <Cell numberOfLines={2} width={1.1}>{item.day[1]}</Cell>
+          <Cell numberOfLines={2} width={1.1}>{item.day[2]}</Cell>
+          <Cell numberOfLines={2} width={1.1}>{item.day[3]}</Cell>
+          <Cell numberOfLines={2} width={1.1}>{item.day[4]}</Cell>
+        </Row>
+      );
+  }
+
+  renderHeader() {
+      return (
+        <Header>
+          <HeaderCell text="-" />
+          <HeaderCell text="MON" />
+          <HeaderCell text="TUE" />
+          <HeaderCell text="WED" />
+          <HeaderCell text="THU" />
+          <HeaderCell text="FRI" />
+        </Header>
+      );
+  }
+
 
   render() {
-
-    const state = this.state;
-
     return (
       <View style={styles.container}>
-      <Table>
-      <Row data={state.tableHead} flexArr={[0.795,1,1,1,1,1]} style={styles.head} textStyle={styles.headText}/>
-      <TableWrapper style={styles.wrapper}>
-      <Col data={state.tableTitle}  style={styles.title} heightArr={[32,32]} textStyle={styles.text}/>
-      <Rows data={state.tableData} flexArr={[1, 1, 1, 1, 1]} style={styles.row} textStyle={styles.text}/>
-      </TableWrapper>
-      </Table>
+	<DataTable
+          dataSource={this.state.ds}
+          renderRow={this.renderRow}
+          renderHeader={this.renderHeader}
+        />
       </View>
       )
   }

@@ -1,10 +1,8 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View, Text, TouchableOpacity, BackHandler, AppRegistry, Button } from 'react-native';
-import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
+import {  StyleSheet, View, Text, TouchableOpacity, BackHandler, AppRegistry, Button } from 'react-native';
 import { Component } from 'react';
-import Icons from 'react-native-vector-icons/MaterialIcons';
-import SimpleToggleButton from '../components/SimpleToggleButton';
-import MultipleChoice from 'rn-multiple-choice';
+import { DataTable, Header, HeaderCell, Row, Cell, CheckableCell } from 'react-native-data-table';
+import { ListView } from 'realm/react-native';
 
 export default class TimePreference extends React.Component {
 
@@ -16,7 +14,7 @@ export default class TimePreference extends React.Component {
     },
     headerRight: (
           <Button
-                onPress={() => { navigation.navigate('Generate', { freeTimes: navigation.getParam('freeTimes')(), prefs: navigation.getParam('prefs')() }) }}
+                onPress={() => { navigation.navigate('Generate', { freeTimes: navigation.getParam('freeTimes')()}) }}
                 title="Done"
           />
         )
@@ -24,12 +22,18 @@ export default class TimePreference extends React.Component {
   };
 
   componentDidMount() {
-    this.props.navigation.setParams({ freeTimes: this._freeTimes, prefs: this._prefs });
+    this.props.navigation.setParams({ freeTimes: this._freeTimes });
   }
 
-  _freeTimes = () => {}
+  _freeTimes = () => {
+    let ft = [];
 
-  _prefs = () => {}
+    for (var [key, value] of this.state.freeTimes)
+      if (value) ft.push(key);
+
+    console.log(ft);
+    return ft;
+  }
 
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
@@ -48,67 +52,71 @@ export default class TimePreference extends React.Component {
   constructor(props) {
     super(props);
     this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
-    this._onStateChange = this._onStateChange.bind(this)
-    elementButton = (value) => (
-      <TouchableOpacity onPress={() => this.handleBackButtonClick() }>
-        <View style={styles.btn}>
-          <Icons name={value} size={30} color='#000' style={{ marginLeft: '3%' }} />
-        </View>
-      </TouchableOpacity>
-    );
-
-    timeButton = () => (
-      <View>
-        <SimpleToggleButton />
-      </View>
-    );
-
+    const freeTimes = this.props.navigation.state.params.freeTimes;
+    this.ds = new ListView.DataSource({
+        rowHasChanged: (row1, row2) => row1 !== row2,
+    });
+    schedule = []; for (var i = 0; i < 12; i++) schedule.push({hour:(8+i)+':40', day:Array(5).fill('')});
     this.state = {
-      tableHead: [elementButton('arrow-back'), 'Mon', 'Tue', 'Wed', 'Thr', 'Fri'],
-      tableTitle: ['8.40\n9.30', '9.40\n10.30', '10.40\n11.30', '11.40\n12.30', '12.40\n13.30', '13.40\n14.30', '14.40\n15.30', '15.40\n16.30', '16.40\n17.30', '17.40\n18.30', '18.40\n19.30', '19.40\n20.30'],
-      tableData: [
-        [timeButton(), timeButton(), timeButton(), timeButton(), timeButton()],
-        [timeButton(), timeButton(), timeButton(), timeButton(), timeButton()],
-        [timeButton(), timeButton(), timeButton(), timeButton(), timeButton()],
-        [timeButton(), timeButton(), timeButton(), timeButton(), timeButton()],
-        [timeButton(), timeButton(), timeButton(), timeButton(), timeButton()],
-        [timeButton(), timeButton(), timeButton(), timeButton(), timeButton()],
-        [timeButton(), timeButton(), timeButton(), timeButton(), timeButton()],
-        [timeButton(), timeButton(), timeButton(), timeButton(), timeButton()],
-        [timeButton(), timeButton(), timeButton(), timeButton(), timeButton()],
-        [timeButton(), timeButton(), timeButton(), timeButton(), timeButton()],
-        [timeButton(), timeButton(), timeButton(), timeButton(), timeButton()],
-        [timeButton(), timeButton(), timeButton(), timeButton(), timeButton()]
-      ],
-
+      schedule: schedule, ds: this.ds.cloneWithRows(schedule),
+      freeTimes: (new Map(): Map<integer, boolean>)
     }
+
+    //console.log(freeTimes);
+    freeTimes.forEach((item) => this.state.freeTimes.set(item, true));
   }
-  _onStateChange(newState) {
-    const value = newState ? "ON" : "OFF"
-    this.setState({ toggleState: value })
-    //could be used for implementing selected free times
-  };
+
+  _onPress = (d, h) => { console.log(d + " - " + h);
+     this.setState((state) => {
+      const freeTimes = new Map(state.freeTimes);
+      freeTimes.set(h*5+d, !freeTimes.get(h*5+d));
+      return { freeTimes };
+    }); console.log(JSON.stringify(this.state.freeTimes));
+  }
+
+  renderRow = (item, sid, rid) => {
+      renderIsChecked = () => <Text style={{backgroundColor: 'green'}}/>;
+      renderIsNotChecked = () => <Text style={{backgroundColor: 'red'}}/>;
+
+      return (
+        <Row>
+          <Cell>{item.hour}</Cell>
+	  <CheckableCell key={rid*5+1} renderIsChecked={renderIsChecked} renderIsNotChecked={renderIsNotChecked} isChecked={this.state.freeTimes.get(rid*5+1)} 
+onPress={() => { console.log(rid + " - " + 1); this.state.freeTimes.set(rid*5+1, !this.state.freeTimes.get(rid*5+1)) }}/>
+	  <CheckableCell key={rid*5+2} renderIsChecked={renderIsChecked} renderIsNotChecked={renderIsNotChecked} isChecked={this.state.freeTimes.get(rid*5+2)} 
+onPress={() => { console.log(rid + " - " + 2); this.state.freeTimes.set(rid*5+2, !this.state.freeTimes.get(rid*5+2)) }}/>
+	  <CheckableCell key={rid*5+3} renderIsChecked={renderIsChecked} renderIsNotChecked={renderIsNotChecked} isChecked={this.state.freeTimes.get(rid*5+3)} 
+onPress={() => { console.log(rid + " - " + 3); this.state.freeTimes.set(rid*5+3, !this.state.freeTimes.get(rid*5+3)) }}/>
+	  <CheckableCell key={rid*5+4} renderIsChecked={renderIsChecked} renderIsNotChecked={renderIsNotChecked} isChecked={this.state.freeTimes.get(rid*5+4)} 
+onPress={() => { console.log(rid + " - " + 4); this.state.freeTimes.set(rid*5+4, !this.state.freeTimes.get(rid*5+4)) }}/>
+	  <CheckableCell key={rid*5+5} renderIsChecked={renderIsChecked} renderIsNotChecked={renderIsNotChecked} isChecked={this.state.freeTimes.get(rid*5+5)} 
+onPress={() => { console.log(rid + " - " + 5); this.state.freeTimes.set(rid*5+5, !this.state.freeTimes.get(rid*5+5)) }}/>
+        </Row>
+      );
+  }
+
+  renderHeader() {
+      return (
+        <Header>
+          <HeaderCell text="-" />
+          <HeaderCell text="MON" />
+          <HeaderCell text="TUE" />
+          <HeaderCell text="WED" />
+          <HeaderCell text="THU" />
+          <HeaderCell text="FRI" />
+        </Header>
+      );
+  }
+
   render() {
-    const state = this.state;
     return (
       //Time Preferences
       <View style={styles.container}>
-        <Table>
-          <Row data={state.tableHead} flexArr={[0.8, 1, 1, 1, 1, 1]} style={styles.head} textStyle={styles.headText} />
-          <TableWrapper style={styles.wrapper}>
-            <Col data={state.tableTitle} style={styles.title} heightArr={[32, 32]} textStyle={styles.text} />
-            <Rows data={state.tableData} flexArr={[1, 1, 1, 1, 1]} style={styles.row} textStyle={styles.text} />
-          </TableWrapper>
-        </Table>
-
-          <MultipleChoice style={styles.container}
-         options= {[
-           'Try 1 Day Free' , 'Minimize Density'
-            ]}
-            selectedOptions={[]}
-            maxSelectedOptions= {1}
-            onSelection= {(option)=>alert(option + 'was selected!')}
-            />
+	<DataTable
+          dataSource={this.state.ds}
+          renderRow={this.renderRow}
+          renderHeader={this.renderHeader}
+        />
       </View>
     )
   }

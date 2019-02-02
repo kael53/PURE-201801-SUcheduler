@@ -1,7 +1,9 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
-import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
+import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
 import { Component } from 'react';
+import { DataTable, Header, HeaderCell, Row, Cell } from 'react-native-data-table';
+import { ListView } from 'realm/react-native';
+import ScheduleRow from '../components/ScheduleRow.js';
 
 export default class SchedulesScreen extends React.Component {
 
@@ -12,48 +14,40 @@ export default class SchedulesScreen extends React.Component {
     }
   };
 
-_navigateTo = (routeName: string, eProps: object) => {
-  this.props.navigation.navigate(routeName);
-  //add eProps to this.props
-};
-
-//getSchedule param: schedule name return: schedule object from the database
-//getSchedules return: schedule names from the database
-
- constructor(props) {     //CRN no table, names(schedule1 etc) are buttons that calls schedule table
+ constructor(props) {
   super(props);
+  this.ds = new ListView.DataSource({
+        rowHasChanged: (row1, row2) => row1 !== row2,
+    });
+ };
 
-  const elementButton = (value: string) => (
-    <TouchableOpacity onPress={() => this._navigateTo('Schedule', getSchedule(value))}>
-    <View style={styles.btn}>
-    <Text style={styles.textCol}>{value}</Text>
-    </View>
-    </TouchableOpacity>
-    );
+    renderRow(item) {
+      return (
+	<ScheduleRow name={item.name} schedule={item.schedule} />
+      );
+    }
 
-  var schedules = getSchedules();
-  var crns = getCRNs(schedules);
+    renderHeader() {
+      return (
+	<Header>
+	  <HeaderCell text="Names" />
+	  <HeaderCell text="CRNs" />
+	</Header>
+      );
+    }
 
-  this.state = {
-    tableHead: ['', 'CRN codes'],
-    tableTitle: schedules,
-    tableData: crns
-  }
-};
 
   render() {
-    const state = this.state;
+    const schedules = this.props.navigation.state.params.schedules;
 
     return (
-      <View style={styles.container}>
-      <Table>
-      <Row data={state.tableHead} flexArr={[1.99,6]} style={styles.head} textStyle={styles.textHead}/>
-      <TableWrapper style={styles.wrapper}>
-      <Col data={state.tableTitle} style={styles.title} heightArr={[32,32]} textStyle={styles.text}/>
-      <Rows data={state.tableData} flexArr={[1, 1, 1, 1, 1, 1]} style={styles.row} textStyle={styles.text}/>
-      </TableWrapper>
-      </Table>
-      </View>
+     <View style={styles.container}>
+	<DataTable
+	  dataSource={this.ds.cloneWithRows(schedules)}
+	  renderRow={this.renderRow}
+	  renderHeader={this.renderHeader}
+        />
+     </View>
     )
   }
 }

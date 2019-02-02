@@ -9,14 +9,13 @@ import SettingsScreen from '../screens/SettingsScreen';
 import ScheduleScreen from '../screens/ScheduleScreen';
 import TimePreference from '../screens/TimePreference';
 import AddCourseScreen from '../screens/AddCourseScreen'   ;
-import CoursePreference from '../screens/CoursePreference'; 
+import CoursePreference from '../screens/CoursePreference';
 
 const GenerateStack = createStackNavigator({
   Generate: GenerateScreen,
   AddCourse: AddCourseScreen,
   TimePref: TimePreference ,
-  CoursePref: CoursePreference 
-  
+  CoursePref: CoursePreference
 });
 
 GenerateStack.navigationOptions = {
@@ -74,12 +73,12 @@ export default createBottomTabNavigator({
 },
  {
    tabBarOptions: {
- 
+
   activeBackgroundColor: 'rgb(226,226,226)',
 
   style: {
     backgroundColor: 'white',
   },
-} 
+}
   }
 );
