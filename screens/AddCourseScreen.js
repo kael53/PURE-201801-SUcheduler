@@ -5,29 +5,15 @@ import React, { Component } from 'react'; import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  Picker,
   View,
   Button,
+  Dimensions,
   FlatList
 } from 'react-native';
-import { CheckBox } from 'react-native-elements'
-import { WebBrowser } from 'expo';
-import { MonoText } from '../components/StyledText';
-import PropTypes from 'prop-types';
-import AlphaScrollFlatList from 'alpha-scroll-flat-list';
-import db from '../config/database.js';
+import { Feather } from '@expo/vector-icons';
 
-const styles = StyleSheet.create({
-  container: { flex: 3, padding: 20, paddingTop: 60, backgroundColor: '#fff', height: 100 }, //padding --> yanlardaki bosluk, padding top ==> ustteki bosluk
-  head: { height: 32, backgroundColor: '#f1f8ff' },
-  wrapper: { flexDirection: 'row' },
-  title: { flex: 2, backgroundColor: '#f6f1fa' },
-  selected: { flex: 2, backgroundColor: '#f6f1fa' },
-  row: { height: 32 },
-  text: { textAlign: 'center' },
-  button: { flex: 1, padding: 20, paddingTop: 60, backgroundColor: '#fff', height: 100 }, //padding --> yanlardaki bosluk, padding top ==> ustteki bosluk
-
-});
+const SCREEN_WIDTH = Dimensions.get("window").width
+const SCREEN_HEIGHT = Dimensions.get("window").height
 
 class MyListItem extends React.Component {
   _onPress = () => {
@@ -35,14 +21,25 @@ class MyListItem extends React.Component {
   };
 
   render() {
-    const textColor = this.props.selected ? "blue" : "black";
+    const textColor = this.props.selected ? 'rgba(0,123,217,1.0)' : "black";
+    const textColor2 = this.props.selected ? 'rgba(0,123,217,1.0)' : "rgba(0,0,0,0.75)";
+
+    const bgColor = this.props.selected ? 'white' : "white";
     return (
-      <TouchableOpacity onPress={this._onPress}>
-        <View>
-          <Text style={{ color: textColor }}>
-            {this.props.name} --- {this.props.title}
-          </Text>
+      <TouchableOpacity onPress={this._onPress} activeOpacity={0.75} style={[styles.rowButton,{backgroundColor: bgColor}]}>
+        {this.props.selected ? 
+        <View style={{marginRight: 8}}>
+          <Feather size={20}  color={'rgba(0,123,217,1.0)'} name={"check-circle"}/>
         </View>
+        :
+          null
+        }
+        <Text style={[styles.rowText, {color: textColor}]}>
+          {this.props.name}
+        </Text>
+        <Text numberOfLines={1} style={[styles.rowText1, {color: textColor2}]}>
+          {this.props.title}
+        </Text>
       </TouchableOpacity>
     );
   }
@@ -53,19 +50,31 @@ export default class AddCourseScreen extends React.Component {
     return {
     	headerTitle: 'Add Courses',
     	headerStyle: {
-      	  backgroundColor: 'lightblue'
-    	},
+      },
+      headerLeft: (
+        <TouchableOpacity
+          style={{height: '100%', justifyContent: 'center', alignItems:' center', paddingHorizontal: 16}}
+          activeOpacity={0.8}
+          onPress={() => { navigation.goBack() }}
+        >
+          <Feather size={26} color={"black"} name={"chevron-left"}/>
+        </TouchableOpacity>
+      ),
     	headerRight: (
-      	  <Button
-        	onPress={() => { navigation.navigate('Generate', { data: navigation.getParam('selected')() }) }}
-        	title="Done"
-        	//color="#fff"
-      	  />
+      	  <TouchableOpacity
+            style={{height: '100%', justifyContent: 'center', alignItems:' center', paddingHorizontal: 16}}
+            activeOpacity={0.8}
+        	  onPress={() => { navigation.navigate('Generate', { data: navigation.getParam('selected')() }) }}
+      	  >
+          <Text style={{fontWeight: '500', fontSize: 18, color: 'rgba(0,123,217,1.0)'}}>
+            Done
+          </Text>
+          </TouchableOpacity>
     	)
     };
   };
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.navigation.setParams({ selected: this._selected });
   }
 
@@ -81,34 +90,25 @@ export default class AddCourseScreen extends React.Component {
     const selecteds = this.props.navigation.state.params.selected;
     let course = [];
 
-    db.transaction(
-	tx => { tx.executeSql('select * from course', [], (_, { rows }) =>
-		rows._array.forEach((item) => course.push({name: item.subject+item.number, title: item.description}))
-        	);
-              }
-    , (e) => console.log(e), () => this.setState({ data: course.filter(item =>!this.isSelected(item, selecteds), this) }));
+    fetch("http://sucheduler-env-1.hdzgdhrn29.us-west-2.elasticbeanstalk.com/courses", {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            method: "getCs"
+        })
+    })
+    .then((response) => response.json())
+    .then((responseData) => {
+		responseData.courses.forEach((item) => course.push({name: item.name, title: item.title}));
+		this.setState({ data: course.filter(item =>!this.isSelected(item, selecteds), this) });
+    })
+    .done();
 
     this.state = {
       data: [],
-      /*data: [
-        { name: 'CS201', title: 'Introduction to Computing' },
-        { name: 'CS204', title: 'Advanced Programming' },
-        { name: 'CS300', title: 'Data Structures' },
-        { name: 'CS301', title: 'Algorithms' },
-        { name: 'CS305', title: 'Programming Languages' },
-        { name: 'CS402', title: 'Compiler Design' },
-        { name: 'ENG101', title: 'Freshman English I' },
-        { name: 'ENG102', title: 'Freshman English II' },
-        { name: 'HIST191', title: 'Principles of Atatürk and the History of the Turkish Revolution I' },
-        { name: 'HIST192', title: 'Principles of Atatürk and the History of the Turkish Revolution II' },
-        { name: 'HUM201', title: 'Major Works of Literature - Myths and Archetypes' },
-        { name: 'HUM202', title: 'Major Works of Western Art' },
-        { name: 'HUM203', title: 'Major Works of Ottoman Culture' },
-        { name: 'MATH101', title: 'Calculus I' }, { name: 'MATH102', title: 'Calculus II' }, { name: 'MATH201', title: 'Linear Algebra' }, { name: 'MATH203', title: 'Introduction to Probability' }, { name: 'MATH204', title: 'Discrete Mathematics' },
-        { name: 'NS101', title: 'Science of Nature I' }, { name: 'NS102', title: 'Science of Nature II' },
-        { name: 'SPS101', title: 'Humanity and Society I' }, { name: 'SPS102', title: 'Humanity and Society II' }, { name: 'SPS303', title: 'Law and Ethics' },
-        { name: 'TLL001', title: 'Communication Skills in Turkish' }, { name: 'TLL101', title: 'Turkish Language and Literature I' }, { name: 'TLL102', title: 'Turkish Language and Literature II' },
-      ].filter(item => !this.isSelected(item, selecteds), this),*/
       selected: (new Map(): Map<string, boolean>)
     };
   }
@@ -143,16 +143,49 @@ export default class AddCourseScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <AlphaScrollFlatList
+        <FlatList
           data={this.state.data.sort((prev,next) => prev.name.localeCompare(next.name))}
           extraData={this.state}
           keyExtractor={this._keyExtractor}
           renderItem={this._renderItem}
-          reverse={false}
-          itemHeight={500}
+          removeClippedSubviews={false}
+          style={{flex:1}}
+          ItemSeparatorComponent={() => <View style={{height: 1, width: SCREEN_WIDTH, backgroundColor: 'rgba(100,100,100,0.15)'}}/>}
         />
       </View>
     );
 
   }
 }
+
+
+const styles = StyleSheet.create({
+  rowButton: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: SCREEN_WIDTH<321?12:14,
+    paddingHorizontal: 16
+  },
+  rowText: {
+    fontWeight: '600',
+    fontSize: SCREEN_WIDTH<321? 15:16,
+  },  
+  rowText1: {
+    fontWeight: '400',
+    flex: 1,
+    textAlign: 'right',
+    paddingLeft: 20,
+    fontSize: SCREEN_WIDTH<321? 15:16,
+  },  
+
+  container: { flex: 1, backgroundColor: '#fff'}, //padding --> yanlardaki bosluk, padding top ==> ustteki bosluk
+  head: { height: 32, backgroundColor: '#f1f8ff' },
+  wrapper: { flexDirection: 'row' },
+  title: { flex: 2, backgroundColor: '#f6f1fa' },
+  selected: { flex: 2, backgroundColor: '#f6f1fa' },
+  row: { height: 32 },
+  text: { textAlign: 'center' },
+  button: { flex: 1, padding: 20, paddingTop: 60, backgroundColor: '#fff', height: 100 }, //padding --> yanlardaki bosluk, padding top ==> ustteki bosluk
+
+});

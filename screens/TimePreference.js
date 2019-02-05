@@ -1,27 +1,44 @@
 import React from 'react';
-import {  StyleSheet, View, Text, TouchableOpacity, BackHandler, AppRegistry, Button } from 'react-native';
+import {  StyleSheet,Dimensions, View, Text, TouchableOpacity, BackHandler, AppRegistry, Button } from 'react-native';
 import { Component } from 'react';
 import { DataTable, Header, HeaderCell, Row, Cell, CheckableCell } from 'react-native-data-table';
 import { ListView } from 'realm/react-native';
+import { Feather } from '@expo/vector-icons';
+
+const SCREEN_WIDTH = Dimensions.get("window").width
+const SCREEN_HEIGHT = Dimensions.get("window").height
 
 export default class TimePreference extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
     return {
-    title: 'Time Preferences',
-    headerStyle: {
-      backgroundColor: 'lightblue'
-    },
-    headerRight: (
-          <Button
-                onPress={() => { navigation.navigate('Generate', { freeTimes: navigation.getParam('freeTimes')()}) }}
-                title="Done"
-          />
-        )
+    	headerTitle: 'Time Preferences',
+    	headerStyle: {
+      },
+      headerLeft: (
+        <TouchableOpacity
+          style={{height: '100%', justifyContent: 'center', alignItems:' center', paddingHorizontal: 16}}
+          activeOpacity={0.8}
+          onPress={() => { navigation.goBack() }}
+        >
+          <Feather size={26} color={"black"} name={"chevron-left"}/>
+        </TouchableOpacity>
+      ),
+    	headerRight: (
+      	  <TouchableOpacity
+            style={{height: '100%', justifyContent: 'center', alignItems:' center', paddingHorizontal: 16}}
+            activeOpacity={0.8}
+        	  onPress={() => { navigation.navigate('Generate', { freeTimes: navigation.getParam('freeTimes')()}) }}
+      	  >
+          <Text style={{fontWeight: '500', fontSize: 18, color: 'rgba(0,123,217,1.0)'}}>
+            Done
+          </Text>
+          </TouchableOpacity>
+    	)
     };
   };
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.navigation.setParams({ freeTimes: this._freeTimes });
   }
 
@@ -31,7 +48,6 @@ export default class TimePreference extends React.Component {
     for (var [key, value] of this.state.freeTimes)
       if (value) ft.push(key);
 
-    console.log(ft);
     return ft;
   }
 
@@ -62,48 +78,47 @@ export default class TimePreference extends React.Component {
       freeTimes: (new Map(): Map<integer, boolean>)
     }
 
-    //console.log(freeTimes);
     freeTimes.forEach((item) => this.state.freeTimes.set(item, true));
   }
 
-  _onPress = (d, h) => { console.log(d + " - " + h);
+  _onPress = (d, h) => { 
      this.setState((state) => {
       const freeTimes = new Map(state.freeTimes);
       freeTimes.set(h*5+d, !freeTimes.get(h*5+d));
       return { freeTimes };
-    }); console.log(JSON.stringify(this.state.freeTimes));
+    });
   }
 
   renderRow = (item, sid, rid) => {
-      renderIsChecked = () => <Text style={{backgroundColor: 'green'}}/>;
-      renderIsNotChecked = () => <Text style={{backgroundColor: 'red'}}/>;
+      renderIsChecked = () => <View style={{height: 34,margin: 1,  backgroundColor: 'rgba(255,100,90,1.0)'}}/>;
+      renderIsNotChecked = () => <View style={{height: 34,margin: 1, backgroundColor: 'rgba(195,195,195,0.8)'}}/>;
 
       return (
-        <Row>
+        <Row style={styles.rowButton} onPress={() => { this.state.data.splice(rid, 1); this.setState({ ds: this.ds.cloneWithRows(this.state.data) })}}>
           <Cell>{item.hour}</Cell>
-	  <CheckableCell key={rid*5+1} renderIsChecked={renderIsChecked} renderIsNotChecked={renderIsNotChecked} isChecked={this.state.freeTimes.get(rid*5+1)} 
-onPress={() => { console.log(rid + " - " + 1); this.state.freeTimes.set(rid*5+1, !this.state.freeTimes.get(rid*5+1)) }}/>
-	  <CheckableCell key={rid*5+2} renderIsChecked={renderIsChecked} renderIsNotChecked={renderIsNotChecked} isChecked={this.state.freeTimes.get(rid*5+2)} 
-onPress={() => { console.log(rid + " - " + 2); this.state.freeTimes.set(rid*5+2, !this.state.freeTimes.get(rid*5+2)) }}/>
-	  <CheckableCell key={rid*5+3} renderIsChecked={renderIsChecked} renderIsNotChecked={renderIsNotChecked} isChecked={this.state.freeTimes.get(rid*5+3)} 
-onPress={() => { console.log(rid + " - " + 3); this.state.freeTimes.set(rid*5+3, !this.state.freeTimes.get(rid*5+3)) }}/>
-	  <CheckableCell key={rid*5+4} renderIsChecked={renderIsChecked} renderIsNotChecked={renderIsNotChecked} isChecked={this.state.freeTimes.get(rid*5+4)} 
-onPress={() => { console.log(rid + " - " + 4); this.state.freeTimes.set(rid*5+4, !this.state.freeTimes.get(rid*5+4)) }}/>
-	  <CheckableCell key={rid*5+5} renderIsChecked={renderIsChecked} renderIsNotChecked={renderIsNotChecked} isChecked={this.state.freeTimes.get(rid*5+5)} 
-onPress={() => { console.log(rid + " - " + 5); this.state.freeTimes.set(rid*5+5, !this.state.freeTimes.get(rid*5+5)) }}/>
+          <CheckableCell key={rid*5+1} renderIsChecked={renderIsChecked} renderIsNotChecked={renderIsNotChecked} isChecked={this.state.freeTimes.get(rid*5+1)} 
+            onPress={() => {  this.state.freeTimes.set(rid*5+1, !this.state.freeTimes.get(rid*5+1)) }}/>
+          <CheckableCell key={rid*5+2} renderIsChecked={renderIsChecked} renderIsNotChecked={renderIsNotChecked} isChecked={this.state.freeTimes.get(rid*5+2)} 
+            onPress={() => {  this.state.freeTimes.set(rid*5+2, !this.state.freeTimes.get(rid*5+2)) }}/>
+          <CheckableCell key={rid*5+3} renderIsChecked={renderIsChecked} renderIsNotChecked={renderIsNotChecked} isChecked={this.state.freeTimes.get(rid*5+3)} 
+            onPress={() => {  this.state.freeTimes.set(rid*5+3, !this.state.freeTimes.get(rid*5+3)) }}/>
+          <CheckableCell key={rid*5+4} renderIsChecked={renderIsChecked} renderIsNotChecked={renderIsNotChecked} isChecked={this.state.freeTimes.get(rid*5+4)} 
+            onPress={() => {  this.state.freeTimes.set(rid*5+4, !this.state.freeTimes.get(rid*5+4)) }}/>
+          <CheckableCell key={rid*5+5} renderIsChecked={renderIsChecked} renderIsNotChecked={renderIsNotChecked} isChecked={this.state.freeTimes.get(rid*5+5)} 
+            onPress={() => {  this.state.freeTimes.set(rid*5+5, !this.state.freeTimes.get(rid*5+5)) }}/>
         </Row>
       );
   }
 
   renderHeader() {
       return (
-        <Header>
-          <HeaderCell text="-" />
-          <HeaderCell text="MON" />
-          <HeaderCell text="TUE" />
-          <HeaderCell text="WED" />
-          <HeaderCell text="THU" />
-          <HeaderCell text="FRI" />
+        <Header style={{backgroundColor: 'white', borderBottomColor: 'rgba(0,0,0,0.1)', borderBottomWidth: 1, }} >
+          <HeaderCell textStyle={styles.headerText} text="TIME" />
+          <HeaderCell textStyle={styles.headerText} text="MON" />
+          <HeaderCell textStyle={styles.headerText} text="TUE" />
+          <HeaderCell textStyle={styles.headerText} text="WED" />
+          <HeaderCell textStyle={styles.headerText} text="THU" />
+          <HeaderCell textStyle={styles.headerText} text="FRI" />
         </Header>
       );
   }
@@ -112,35 +127,50 @@ onPress={() => { console.log(rid + " - " + 5); this.state.freeTimes.set(rid*5+5,
     return (
       //Time Preferences
       <View style={styles.container}>
-	<DataTable
-          dataSource={this.state.ds}
-          renderRow={this.renderRow}
-          renderHeader={this.renderHeader}
-        />
+        <View style={styles.tableContainer}>
+          <DataTable
+            dataSource={this.state.ds}
+            renderRow={this.renderRow}
+            renderHeader={this.renderHeader}
+          />
+       </View>
       </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, paddingTop: 20 }, //padding --> yanlardaki bosluk, padding top ==> ustteki bosluk
-
-  container3: {
-    flex: 0,
-    paddingTop: 20,
+  container: { 
+    flex: 1 
   },
-  head: { height: 32, backgroundColor: '#f1f8ff' },
-  wrapper: { flexDirection: 'row' },
-  title: { flex: 0.8, backgroundColor: '#f6f1fa' },
-  row: { flex: 0, padding: 0, paddingTop: 0, height: 32 },
-  text: { textAlign: 'center' },
-  headText: { textAlign: 'center', fontSize: 24 },
-  btn: {
+  headerText: {
+    fontSize: 14,
+    paddingHorizontal: 3,
+    marginLeft: 5,
+    paddingTop: 12,
+    paddingBottom: 12,
+    fontWeight: '700'
+  },
+  tableContainer: {
+    marginTop: 16,
+    height: SCREEN_HEIGHT* 0.75,
+    marginHorizontal: 16,
+    borderWidth: 1,
+    backgroundColor: 'rgba(250,250,250,1)',
+    borderColor: 'rgba(220,220,220,1)',
+    borderRadius: 4,
+    overflow: 'hidden'
+  },
+  rowButton: {
     alignItems: 'center',
-    backgroundColor: '#2196F3'
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 5,
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderColor: 'rgba(100,100,100,0.15)',
+    backgroundColor: 'white'
   },
-
-
 });
 
 

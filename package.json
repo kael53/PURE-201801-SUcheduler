@@ -12,11 +12,12 @@
   },
   "dependencies": {
     "@expo/samples": "2.1.1",
-    "alpha-scroll-flat-list": "^0.2.20",
+    "@expo/vector-icons": "^9.0.0",
     "expo": "^32.0.0",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
     "react-native-data-table": "^0.2.1",
+    "react-native-dialog": "^5.5.0",
     "react-native-elements": "^0.19.1",
     "react-native-fs": "^2.13.3",
     "react-native-table-component": "^1.2.0",

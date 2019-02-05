@@ -1,33 +1,19 @@
-import React, { Component } from 'react';
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  Button
-} from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View,Image, Button, Dimensions } from 'react-native';
 import { DataTable, Header, HeaderCell, Row, Cell } from 'react-native-data-table';
 import { ListView } from 'realm/react-native';
-import db from '../config/database.js';
+import { Feather,EvilIcons } from '@expo/vector-icons';
 
-const styles = StyleSheet.create({
-  container: { flex: 3, padding: 20, paddingTop: 60, backgroundColor: '#fff', height: 100 }, //padding --> yanlardaki bosluk, padding top ==> ustteki bosluk
-  head: { height: 32, backgroundColor: '#f1f8ff' },
-  wrapper: { flexDirection: 'row' },
-  title: { flex: 2, backgroundColor: '#f6f1fa' },
-  selected: { flex: 2, backgroundColor: '#f6f1fa' },
-  row: { height: 32 },
-  text: { textAlign: 'center' },
-  button: { flex: 1, padding: 20, paddingTop: 60, backgroundColor: '#fff', height: 100 }, //padding --> yanlardaki bosluk, padding top ==> ustteki bosluk
-
-});
+const SCREEN_WIDTH = Dimensions.get("window").width
+const SCREEN_HEIGHT = Dimensions.get("window").height
 
 export default class GenerateScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Generate',
-      headerStyle: {
-      backgroundColor: 'lightblue'
-    }
+  static navigationOptions = ({ navigation }) => {
+    return {
+    	headerTitle: 'SUCHEDULER',
+    	headerStyle: {
+      },
+    };
   };
 
   constructor(props) {
@@ -43,15 +29,15 @@ export default class GenerateScreen extends React.Component {
     };
   }
 
- checkStatus (res) {
-  if (res.status >= 200 && res.status < 300) {
-    return res
-  } else {
-    let err = new Error(res.statusText)
-    err.response = res
-    throw err
+  checkStatus (res) {
+    if (res.status >= 200 && res.status < 300) {
+      return res
+    } else {
+      let err = new Error(res.statusText)
+      err.response = res
+      throw err
+    }
   }
-}
 
   _generate = () => {
     fetch("http://sucheduler-env-1.hdzgdhrn29.us-west-2.elasticbeanstalk.com/generate", {
@@ -71,18 +57,14 @@ export default class GenerateScreen extends React.Component {
     .then((response) => response.json())
     .then((responseData) => {
         let schedules = []
-	for (var i in responseData.Schedules)
-	     schedules.push({ name: "Schedule " + i, schedule: responseData.Schedules[i].Schedule.join(',') });
-    	console.log(
-           "POST Response",
-           "Response Body -> " + JSON.stringify(responseData)
-        )
+	    responseData.Schedules.forEach( (item, index) =>
+	     	schedules.push({ name: "Schedule " + parseInt(index+1), schedule: item.Schedule.join(',') })
+	    );
         this.props.navigation.navigate('Schedules',{ schedules: schedules });
     })
     .catch(err => {
 	if (err.response.status == 409) {
 	   warnings = ""; days = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
-	   console.log(JSON.stringify(err));
 	   let Schedule = JSON.parse(err.response._bodyInit).Schedules[0];
 	   Schedule.Warnings.forEach((item) => {
 		if (item[0] == "COURSESOVERLAP") {
@@ -112,38 +94,123 @@ export default class GenerateScreen extends React.Component {
     }
   }
 
-    renderRow = (item, sid, rid) => {
-      console.log(JSON.stringify(item));
-      return (
-        <Row onPress={() => { this.state.data.splice(rid, 1); this.setState({ ds: this.ds.cloneWithRows(this.state.data) })}}>
-          <Cell width={1}>{item.name}</Cell>
-          <Cell numberOfLines={2} width={3}>{item.title}</Cell>
-        </Row>
-      );
-    }
-    renderHeader() {
-      return (
-        <Header>
-          <HeaderCell text="Name" />
-          <HeaderCell text="Title" />
-        </Header>
-      );
-    }
+  renderRow = (item, sid, rid) => {
+    return (
+      <Row style={styles.rowButton} onPress={() => { this.state.data.splice(rid, 1); this.setState({ ds: this.ds.cloneWithRows(this.state.data) })}}>
+        <Cell width={1} textStyle={[styles.rowText]}>{item.name}</Cell>
+        <Cell width={3} textStyle={[styles.rowText1]}>{item.title}</Cell>
+      </Row>
+    );
+  }
+
+  renderHeader() {
+    return (
+      <Header style={{backgroundColor: 'white', borderBottomColor: 'rgba(0,0,0,0.1)', borderBottomWidth: 1, }} >
+        <HeaderCell width={1} textStyle={styles.headerText} text="CODE" />
+        <HeaderCell width={3} textStyle={[styles.headerText]} text="NAME" />
+      </Header>
+    );
+  }
 
   render() {
     return (
       <View style={styles.container}>
-        <Button title="Add Courses" style={styles.button} onPress={() => { this.props.navigation.navigate('AddCourse', { selected: this.state.data }) }} />
-        <Button title="Time Preferences" style={styles.button} onPress={() => { this.props.navigation.navigate('TimePref', { freeTimes: this.state.freeTimes }) }} />
-        <Button title="Course Preferences" style={styles.button} onPress={() => { this.props.navigation.navigate('CoursePref',{ selected: this.state.data }) }} />
-	<DataTable
-          dataSource={this.state.ds}
-          renderRow={this.renderRow}
-          renderHeader={this.renderHeader}
-	  enableEmptySections={true}
-        />
-        <Button title="Generate" style={styles.button} onPress={() => this._generate()} />
+        {/* <Button title="Course Preferences" style={styles.button} onPress={() => { this.props.navigation.navigate('CoursePref',{ selected: this.state.data }) }} /> */}
+      	
+        <View style={styles.tableContainer}>
+          <DataTable
+            dataSource={this.state.ds}
+            renderRow={this.renderRow}
+            renderHeader={this.renderHeader}
+            enableEmptySections={true}
+          />
+        </View>
+        <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={() => { this.props.navigation.navigate('AddCourse', { selected: this.state.data }) }}>
+          <EvilIcons name={"plus"} size={38} style={{marginLeft: -3,}} />
+          <Text style={styles.buttonText}>
+            ADD COURSES
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={() => { this.props.navigation.navigate('TimePref', { freeTimes: this.state.freeTimes }) }}>
+          <Image resizeMode={"contain"} style={styles.iconImage} source={require("../assets/3.png")}/>
+          <Text style={styles.buttonText}>
+            TIME PREFERENCES
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={() => this._generate()}>
+          <Image resizeMode={"contain"} style={styles.iconImage} source={require("../assets/2.png")}/>
+          <Text style={styles.buttonText}>
+            GENERATE SUCHEDULES
+          </Text>
+        </TouchableOpacity>
       </View>
     );
   }
 }
+
+
+const styles = StyleSheet.create({
+  container: { 
+    flex: 1, 
+    backgroundColor: '#fff' 
+  },
+  button: { 
+    width: SCREEN_WIDTH,
+    paddingVertical: 10,
+    flexDirection: 'row',
+    alignItems:'center',
+    paddingHorizontal: 20,
+    borderColor: 'rgba(170,170,170,1)',
+    marginTop: 10,
+    borderWidth: 0,
+    borderRadius: 5,
+    alignSelf: 'center'
+
+  }, 
+  buttonText: {
+    fontWeight:'400',
+    fontSize: SCREEN_WIDTH<321? 19:18,
+    marginLeft: 10,
+  },
+  iconImage: {
+    height: 30,
+    width: 30
+  },
+  tableContainer: {
+    marginTop: 16,
+    height: SCREEN_HEIGHT* 0.4,
+    marginHorizontal: 16,
+    borderWidth: 1,
+    backgroundColor: 'rgba(250,250,250,1)',
+    borderColor: 'rgba(220,220,220,1)',
+    borderRadius: 4,
+    overflow: 'hidden'
+  },
+  headerText: {
+    fontSize: 14,
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    paddingBottom: 12,
+    fontWeight: '700'
+  },
+  rowText: {
+    fontWeight: '600',
+    fontSize: SCREEN_WIDTH<321? 14:15,
+  }, 
+  rowText1: {
+    fontWeight: '400',
+    fontSize: SCREEN_WIDTH<321? 14:15,
+    color: 'rgba(50,50,50,0.8)',
+    paddingLeft: 10,
+  },  
+  rowButton: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: SCREEN_WIDTH<321?12:14,
+    paddingHorizontal: 16,
+    borderBottomWidth: 1,
+    borderColor: 'rgba(100,100,100,0.15)',
+    backgroundColor: 'white'
+  },
+});

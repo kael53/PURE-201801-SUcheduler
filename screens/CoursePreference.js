@@ -1,7 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View, Text, TouchableOpacity, BackHandler, AppRegistry, Button , Platform  } from 'react-native';
 import { Component } from 'react';
-import SimpleToggleButton from '../components/SimpleToggleButton';
 import MultipleChoice from 'rn-multiple-choice';
 import PropTypes from 'prop-types';
 

@@ -3,7 +3,6 @@ import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import db from './config/database.js';
-import { session_table, session_data, date_table, date_data, course_table, course_data } from './config/201802.js';
 
 export default class App extends React.Component {
   state = {
@@ -12,16 +11,8 @@ export default class App extends React.Component {
 
   componentDidMount() {
     db.transaction(tx => {
-      tx.executeSql("drop table if exists session");
-      tx.executeSql(session_table);
-      tx.executeSql(session_data);
-      tx.executeSql("drop table if exists date");
-      tx.executeSql(date_table);
-      tx.executeSql(date_data);
-      tx.executeSql("drop table if exists course");
-      tx.executeSql(course_table);
-      tx.executeSql(course_data);
-    }, (e) => console.log("error" + e), () => console.log("success"));
+      tx.executeSql('CREATE TABLE IF NOT EXISTS "schedules" ( `name` TEXT NOT NULL, `schedule` TEXT NOT NULL, PRIMARY KEY(`name`) );');
+    });
   }
 
   render() {
