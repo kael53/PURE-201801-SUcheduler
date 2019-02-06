@@ -11,6 +11,7 @@ import React, { Component } from 'react'; import {
   FlatList
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import base_url from '../config/api.js';
 
 const SCREEN_WIDTH = Dimensions.get("window").width
 const SCREEN_HEIGHT = Dimensions.get("window").height
@@ -90,7 +91,7 @@ export default class AddCourseScreen extends React.Component {
     const selecteds = this.props.navigation.state.params.selected;
     let course = [];
 
-    fetch("http://sucheduler-env-1.hdzgdhrn29.us-west-2.elasticbeanstalk.com/courses", {
+    fetch(base_url+"/courses", {
         method: 'POST',
         headers: {
             'Accept': 'application/json',

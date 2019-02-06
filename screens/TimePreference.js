@@ -38,7 +38,7 @@ export default class TimePreference extends React.Component {
     };
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.navigation.setParams({ freeTimes: this._freeTimes });
   }
 

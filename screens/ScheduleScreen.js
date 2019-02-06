@@ -6,6 +6,7 @@ import { ListView } from 'realm/react-native';
 import { Feather } from '@expo/vector-icons';
 import Dialog from 'react-native-dialog';
 import db from '../config/database.js';
+import base_url from '../config/api.js';
 
 const SCREEN_WIDTH = Dimensions.get("window").width
 const SCREEN_HEIGHT = Dimensions.get("window").height
@@ -76,7 +77,7 @@ export default class ScheduleScreen extends React.Component {
     const crns = this.props.navigation.state.params.schedule;
     schedule = []; for (var i = 0; i < 12; i++) schedule.push({hour:(8+i)+':40', day:Array(5).fill('')});
 
-    fetch("http://sucheduler-env-1.hdzgdhrn29.us-west-2.elasticbeanstalk.com/courses", {
+    fetch(base_url+"/courses", {
         method: 'POST',
         headers: {
             'Accept': 'application/json',

@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View,Image, Button, Dimensions } fr
 import { DataTable, Header, HeaderCell, Row, Cell } from 'react-native-data-table';
 import { ListView } from 'realm/react-native';
 import { Feather,EvilIcons } from '@expo/vector-icons';
+import base_url from '../config/api.js';
 
 const SCREEN_WIDTH = Dimensions.get("window").width
 const SCREEN_HEIGHT = Dimensions.get("window").height
@@ -40,7 +41,7 @@ export default class GenerateScreen extends React.Component {
   }
 
   _generate = () => {
-    fetch("http://sucheduler-env-1.hdzgdhrn29.us-west-2.elasticbeanstalk.com/generate", {
+    fetch(base_url+"/generate", {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
